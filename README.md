@@ -81,18 +81,19 @@ You can type them straight into the console and press enter, or you can type the
 
 Once they're installed, we have to tell our script that we're going to use them. At the very top of our script, before anything else, we'll do so using the `library()` function. Type the following into your freshly made R Script (**not the console!**):
 
-
-`library(dplyr)`
-
-`library(readr)`
-
-`library(ggplot2)`
+```
+library(dplyr)
+library(readr)
+library(ggplot2)
+```
 
 Now we've got all the tools we need, and it's finally time to load up the data. We'll be using either `read_csv()` or `read_rds()`, both of which are functions from the `{readr}` package. We'll also be saving our data in our environment, just like we saved `x <- 5` earlier. Let's call our dataset "okc_data":
 
-`okc_data <- read_rds("~/Downloads/stanford-citation-data-okc.rds")`
+```
+okc_data <- read_rds("~/Downloads/stanford-citation-data-okc.rds")
+```
 
-If we run our script now, it'll load up all the needed libraries, then read in our data and save it as `okc_data`. You can see in the environment pane of RStudio that all 945,107 rows of our data have been succesfully loaded in R. You can click the little arrow next to it to see more information about the columns / variables inside, as well. Let's pause and just explore the data in RStudio for a bit.
+If we run our script now, it'll load up all the needed libraries, then read in our data and save it as `okc_data`. You can see in the environment pane of RStudio that all 945,107 rows of our data have been succesfully loaded in R. You can also click the little arrow next to it to see more information about the columns / variables inside. Let's pause and just explore the data in RStudio for a bit.
 
 ![image](https://github.com/openjusticeok/spi-2023/assets/56839927/4655efc8-efd3-49b6-aadc-0f8abaad49a6)
 
