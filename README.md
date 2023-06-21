@@ -38,6 +38,7 @@ If Excel is a Toyota Camry, R is a custom-built Formula 1 car -- both can get yo
 
 ### Installing R and RStudio
 
+We'll start by making sure the R language is installed on our computers. We'll also install RStudio, and integrated development environment (IDE) made for doing data analysis in R. Here's a good guide on how to install both: https://rstudio-education.github.io/hopr/starting.html
 
 ---
 # SPI Session 2: Tulsa (July 20-21, 2023)
