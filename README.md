@@ -109,7 +109,9 @@ To start digging into this dataset, let's try to answer the following questions:
 - How "complete" is the data? What is missing?
 - What does the data relevant to our research question (the car's make, model, and color) look like? Is any of it missing?
 
-You can give the data a look by simply clicking on it in the Environment panel, or by running `View(okc_data)` in your R console. We can also write some code to give us a more fine-tuned look. Below is some of the R code we'll use to explore our dataset. We'll go through what it does and how it works together:
+You can give the data a look by simply clicking on it in the Environment panel, or by running `View(okc_data)` in your R console. 
+
+We can also write some code to give us a more fine-tuned look. Below is some of the R code we'll use to explore our dataset. We'll go through what it does and how it works together:
 
 ```
 # What variables are there in the data?
