@@ -145,7 +145,13 @@ okc_data |>
 
 Judging by our analysis and the [data guide](https://github.com/stanford-policylab/opp/blob/master/data_readme.md), it seems like we have full data coverage from 2012 to 2016 (we also have no info on make / model / color after 2017). We'll probably want to limit our analysis to those years to be sure we're using the best quality data. 
 
-The next step in answering our research question is to clean up the relevant columns. In this case, we'll need to pay special attention to the `vehicle_make`, `vehicle_model`, and `vehicle_color` columns.
+Unfortunately, like most data in the world of public policy, this data is very messy -- too messy to answer our research question without more work. Thus, the next step will be cleaning up the relevant columns. In this case, we'll need to pay special attention to the `vehicle_make`, `vehicle_model`, and `vehicle_color` columns.
+
+Our data cleaning tasks:
+- Clean up the `vehicle_make`, `vehicle_model`, and `vehicle_color` columns so that they're consistent and easy to read.
+- Filter out the data we're not interested in -- in this case, we don't need data from 2018 onward, and we don't need the rows corresponding to pedestrian citatinos (where `type` is `"pedestrian"`).
+
+We'll go through how to accomplish each of these together.
 
 ---
 # SPI Session 2: Tulsa (July 20-21, 2023)
