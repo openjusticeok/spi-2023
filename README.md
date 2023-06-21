@@ -82,7 +82,7 @@ In your R console, try typing the following:
 
 You can type them straight into the console and press enter, or you can type them into your script and run the code yourself (using Ctrl+Enter, for example). R will do all the work, so just sit back and watch the paragraphs fly by. Also, all of these packages are a part of the [Tidyverse](https://www.tidyverse.org/), a series of packages that all work together to make data analysis in R easier and more accessible. If we want, we can install all of them (plus a few extras) in one go by typing `install.packages("tidyverse")`.
 
-Once they're installed, we have to tell our script that we're going to use them. At the very top of our script, before anything else, we'll do so using the `library()` function. Type the following into your freshly made R Script (**not the console!**):
+Once they're installed, we have to tell our script that we're going to use them. At the very top of our script, before anything else, we'll do so using the `library()` function. Type the following into your freshly made R Script (**not the console!**), save it, and then run the code:
 
 ```
 library(dplyr)
@@ -91,7 +91,7 @@ library(lubridate)
 library(ggplot2)
 ```
 
-Now we've got all the tools we need, and it's finally time to load up the data. We'll be using either `read_csv()` or `read_rds()`, both of which are functions from the `{readr}` package. We'll also be saving our data in our environment, just like we saved `x <- 5` earlier. Let's call our dataset "okc_data":
+Now it's finally time to load up the data. We'll be using either `read_csv()` or `read_rds()`, both of which are functions from the `{readr}` package we loaded in a second ago. We'll also be saving our data in our environment, just like we saved `x <- 5` earlier. Let's call our dataset "okc_data" by adding this to our script:
 
 ```
 okc_data <- read_rds("~/Downloads/stanford-citation-data-okc.rds")
@@ -145,13 +145,105 @@ okc_data |>
 
 Judging by our analysis and the [data guide](https://github.com/stanford-policylab/opp/blob/master/data_readme.md), it seems like we have full data coverage from 2012 to 2016 (we also have no info on make / model / color after 2017). We'll probably want to limit our analysis to those years to be sure we're using the best quality data. 
 
-Unfortunately, like most data in the world of public policy, this data is very messy -- too messy to answer our research question without more work. Thus, the next step will be cleaning up the relevant columns. In this case, we'll need to pay special attention to the `vehicle_make`, `vehicle_model`, and `vehicle_color` columns.
+Unfortunately, like most data in the world of public policy, what remains is still very messy -- too messy to answer our research question without more work. Thus, the next step will be cleaning up the relevant columns. In this case, we'll need to pay special attention to the `vehicle_make`, `vehicle_model`, and `vehicle_color` columns.
 
 Our data cleaning tasks:
 - Clean up the `vehicle_make`, `vehicle_model`, and `vehicle_color` columns so that they're consistent and easy to read.
-- Filter out the data we're not interested in -- in this case, we don't need data from 2018 onward, and we don't need the rows corresponding to pedestrian citatinos (where `type` is `"pedestrian"`).
+- Filter out the data we're not interested in -- in this case, we don't need data from 2018 onward, and we don't need the rows corresponding to pedestrian citations (where `type` is `"pedestrian"`).
 
-We'll go through how to accomplish each of these together.
+The code below is what we'll use to explore and clean up our data, saving it as a new object named `okc_data_clean`. I know it looks like a lot, but don't worry -- it's not as complicated as it looks, and we'll go through it together step by step.
+
+```
+okc_data_clean <- okc_data |>
+  filter(
+    year >= 2011 & year <= 2017, # removing the years with no make / model / color data
+    type != "pedestrian"
+  ) |> # removing pedestrian citations
+  mutate(
+    year = year(date),
+    vehicle_color_clean = case_when(
+      vehicle_color == "BLK" ~ "Black", # "when `vehicle_color` is "BLK", change it to "Black"
+      vehicle_color == "WHI" | vehicle_color == "WHT" ~ "White", # when `vehicle_color` is "WHI" or "WHT", change it to "White".
+      vehicle_color == "SIL" ~ "Silver", # etc.
+      vehicle_color == "RED" ~ "Red",
+      vehicle_color %in% c("GRY", "GRA") ~ "Gray", # This is another way of checking for multiple matches
+      vehicle_color == "BLU" ~ "Blue",
+      vehicle_color == "MAR" ~ "Maroon",
+      vehicle_color == "GRN" ~ "Green",
+      vehicle_color == "TAN" ~ "Tan",
+      vehicle_color == "GLD" ~ "Gold",
+      vehicle_color == "BRO" ~ "Brown",
+      vehicle_color == "YEL" ~ "Yellow",
+      vehicle_color == "PLE" ~ "Unknown / Other", # I don't know what "PLE" means! Purple maybe?
+      vehicle_color %in% c("BEI", "BGE") ~ "Beige", 
+      vehicle_color %in% c("ONG", "ORG") ~ "Orange",
+      vehicle_color == "DBL" ~ "Dark Blue", # Guessing a bit here -- should this be separate from "Blue"?
+      vehicle_color == "LBL" ~ "Light Blue", # Same as above,
+      vehicle_color == "LGR" ~ "Light Gray",
+      vehicle_color == "DGR" ~ "Dark Gray",
+      vehicle_color == "TEA" ~ "Teal",
+      vehicle_color == "CRM" ~ "Cream",
+      vehicle_color == "PNK" ~ "Pink",
+      grepl("\\|", vehicle_color) ~ "Unknown / Other", # A few have multiple listed; gonna classify as "Unknown / Other" for now.
+      # TRUE ~ vehicle_color
+      TRUE ~ "Unknown / Other" # Everything else will be "Unknown / Other"
+    ),
+    vehicle_make_clean = case_when(
+      vehicle_make == "CHEV" ~ "Chevy", # Same basic idea as before. We'll cover the top 25 or so most common ones.
+      vehicle_make == "FORD" ~ "Ford",
+      vehicle_make == "HOND" ~ "Honda",
+      vehicle_make == "DODG" ~ "Dodge",
+      vehicle_make == "NISS" ~ "Nissan",
+      vehicle_make %in% c("TOYO", "TOYT") ~ "Toyota",
+      vehicle_make == "GMC" ~ "GMC",
+      vehicle_make == "HYUN" ~ "Hyundai",
+      vehicle_make == "JEEP" ~ "Jeep",
+      vehicle_make == "PONT" ~ "Pontiac",
+      vehicle_make == "CHRY" ~ "Chrysler",
+      vehicle_make == "KIA" ~ "Kia",
+      vehicle_make == "CADI" ~ "Cadillac",
+      vehicle_make == "MAZD" ~ "Mazda",
+      vehicle_make == "BUIC" ~ "Buick",
+      vehicle_make == "BMW" ~ "BMW",
+      vehicle_make %in% c("LEXU", "LEXS") ~ "Lexus",
+      vehicle_make == "VOLV" ~ "Volvo",
+      vehicle_make %in% c("MERC", "MERB") ~ "Mercedes",
+      vehicle_make == "MITS" ~ "Mitsubishi",
+      vehicle_make == "VOLK" ~ "Volkswagen",
+      vehicle_make == "LINC" ~ "Lincoln",
+      vehicle_make == "INFI" ~ "Infiniti",
+      vehicle_make == "ACUR" ~ "Acura",
+      TRUE ~ vehicle_make
+      # TRUE ~ "Unknown / Other"
+    ),
+    # For the vehicle model, I'm going to clean it up into broader groups like "Pickup", "Sedan", etc.
+    # If we want to look at specific models later, we can just use the original variable
+    vehicle_model_clean = case_when(
+      vehicle_model %in% c("F15", "F25", "F35", "P/U", "SIL", "RAM", "SIE", "RAN", "15H", "S10", "DAK") ~ "Pickup",
+      vehicle_model %in% c("ACC", "CIV", "ALT", "MAL", "SEN", "TAU", "CMR", "COR",
+                           "300", "JET", "CAV", "TC", "SON", "GAM", "MC", "CV", 
+                           "NEO", "REG", "FUS", "200", "FOC", "FOCU", "LB") ~ "Sedan",
+      vehicle_model %in% c("EXP", "TAH", "YUK", "CHK", "SUB", "CRV", "ESC", "4RN", "BZR", "WRN", "ECL") ~ "SUV",
+      vehicle_model %in% c("MUS", "IPL", "MAX", "IMP", "CHG", "CHA", "GPX", "CEL", "SEB") ~ "Sports Car",
+      vehicle_model %in% c("CAR") ~ "Van / Minivan",
+      # Specific cases
+      vehicle_model == "TAC" & vehicle_make_clean == "Toyota" ~ "Pickup", # Tacoma
+      vehicle_model == "TAC" & vehicle_make_clean == "Chrysler" ~ "Van / Minivan", # Town and Country
+      vehicle_model == "CAM" & vehicle_make_clean == "Chevy" ~ "Sports Car", # Camero
+      vehicle_model == "CAM" & vehicle_make_clean == "Toyota" ~ "Sedan", # Camry
+      vehicle_model == "AVA" & vehicle_make_clean == "Chevy" ~ "Pickup", # Avalanche
+      vehicle_model == "AVA" & vehicle_make_clean == "Toyota" ~ "Sedan", # Avalon
+      vehicle_model == "350" & vehicle_make_clean == "Lexus" ~ "SUV", # Lexus 350
+      vehicle_model == "350" & vehicle_make_clean == "Mercedes" ~ "Sports Car", # Mercedes 350
+      vehicle_model == "350" & vehicle_make_clean == "Ford" ~ "Pickup", # F-350
+      vehicle_model == "350" & vehicle_make_clean == "Nissan" ~ "Sports Car", # Nissan 350
+      TRUE ~ vehicle_model
+    )
+  )
+```
+
+All we've really done here is classify the vehicle data in each citation into clean groups. For example, instead of "TOYA" / "TOYT", it just says "Toyota" now. We've also classified the Ford F-150 as a "Pickup", the Toyta Camry as a "Sedan", etc. We've been able to do this for the vast majority of our ~550k citations in our data from 2011 through 2017, all using the `mutate()` and `case_when()` functions.
+
 
 ---
 # SPI Session 2: Tulsa (July 20-21, 2023)
