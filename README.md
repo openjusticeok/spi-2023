@@ -65,6 +65,7 @@ Save your script wherever you'd like, and then we'll add our first lines of R co
 
 - `{dplyr}` -- this package provides easy and convenient functions for manipulating data. We can use it to filter and sort our data in various ways, add new variables / columns to our data, and much more.
 - `{readr}` -- this package includes functions for reading in all sorts of data. It can handle `.csv` files as well as `.rds` files, so it's what we'll use to load up our data into R.
+- `{lubridate}` -- this package has several useful functions for working with dates / times, which can be tricky.
 - `{ggplot2}` -- this is the premier graphing package in R. We'll be using it to make some fun graphs (and maybe even a map!) using our data.
 
 You can install each of them using the R function `install.packages()`. All R functions use this `word()` format -- the word at the beginning tells R which function we're using, and the parentheses are where we'll put the "arguments" we're supplying to the function. In this case, the only argument we need to provide is to tell it which package we want to install.
@@ -75,6 +76,8 @@ In your R console, try typing the following:
 
 `install.packages("readr")`
 
+`install.packages("lubridate")`
+
 `install.packages("ggplot2")`
 
 You can type them straight into the console and press enter, or you can type them into your script and run the code yourself (using Ctrl+Enter, for example). R will do all the work, so just sit back and watch the paragraphs fly by. Also, all of these packages are a part of the [Tidyverse](https://www.tidyverse.org/), a series of packages that all work together to make data analysis in R easier and more accessible. If we want, we can install all of them (plus a few extras) in one go by typing `install.packages("tidyverse")`.
@@ -84,6 +87,7 @@ Once they're installed, we have to tell our script that we're going to use them.
 ```
 library(dplyr)
 library(readr)
+library(lubridate)
 library(ggplot2)
 ```
 
@@ -97,6 +101,12 @@ If we run our script now, it'll load up all the needed libraries, then read in o
 
 ![image](https://github.com/openjusticeok/spi-2023/assets/56839927/4655efc8-efd3-49b6-aadc-0f8abaad49a6)
 
+## Data Analysis in RStudio
+
+To start digging into this dataset, let's try to answer the following questions:
+
+- What variables exist in the data?
+- How "complete" is the data? What is missing?
 
 ---
 # SPI Session 2: Tulsa (July 20-21, 2023)
