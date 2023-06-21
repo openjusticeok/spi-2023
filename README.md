@@ -107,6 +107,45 @@ To start digging into this dataset, let's try to answer the following questions:
 
 - What variables exist in the data?
 - How "complete" is the data? What is missing?
+- What does the data relevant to our research question (the car's make, model, and color) look like? Is any of it missing?
+
+You can give the data a look by simply clicking on it in the Environment panel, or by running `View(okc_data)` in your R console. We can also write some code to give us a more fine-tuned look. Below is some of the R code we'll use to explore our dataset (we'll go through what it does and how it works together):
+
+```
+# What variables are there in the data?
+names(okc_data)
+
+# ==== How "complete" is the data? ==================================================
+# This code returns a neat table showing the % of each column that are missing, or "NA"
+knitr::kable(colMeans(is.na(okc_data)) * 100) 
+
+# As you can see, we can use multiple functions together to create interesting results
+# The "pipe" (`|>` or `%>%`) makes this a bit easier
+
+# This code shows how many rows we have per year (using the `date` column)
+# First, we take our data and use the |> to feed it into the `group_by()` function. 
+# We'll specify that we want to group the data by the year of the value in the date column.
+okc_data |>
+  group_by(year = year(date)) |>
+  # Now our data are grouped by the year of the citation. Next, we feed that into another function...
+  count() # ...which simply counts the number of rows per group.
+
+# We can combine the `group_by()`` and `summarize()` functions using pipes to get 
+# a better idea of what the variables relevant to our RQ look like. 
+okc_data |>
+  group_by(year = year(date)) |>
+  summarize(
+    n_citations = n(),
+    percent_missing_color = sum(100 * is.na(vehicle_color)) / n_citations,
+    percent_missing_make = sum(100 * is.na(vehicle_make)) / n_citations,
+    percent_missing_model = sum(100 * is.na(vehicle_model)) / n_citations
+    )
+
+```
+
+Judging by our analysis and the [data guide](https://github.com/stanford-policylab/opp/blob/master/data_readme.md), it seems like we have full data coverage from 2012 to 2016 (we also have no info on make / model / color after 2017). We'll probably want to limit our analysis to those years to be sure we're using the best quality data. 
+
+The next step in answering our research question is to clean up the relevant columns. In this case, we'll need to pay special attention to the `vehicle_make`, `vehicle_model`, and `vehicle_color` columns.
 
 ---
 # SPI Session 2: Tulsa (July 20-21, 2023)
