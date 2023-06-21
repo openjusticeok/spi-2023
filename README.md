@@ -101,7 +101,7 @@ If we run our script now, it'll load up all the needed libraries, then read in o
 
 ![image](https://github.com/openjusticeok/spi-2023/assets/56839927/4655efc8-efd3-49b6-aadc-0f8abaad49a6)
 
-## Data Analysis in RStudio
+## Data Analysis in RStudio -- exploring and cleaning up your data
 
 To start digging into this dataset, let's try to answer the following questions:
 
@@ -244,7 +244,11 @@ okc_data_clean <- okc_data |>
   )
 ```
 
-All we've really done here is classify the vehicle data in each citation into clean groups. For example, instead of "TOYA" / "TOYT", it just says "Toyota" now. We've also classified the Ford F-150 as a "Pickup", the Toyta Camry as a "Sedan", etc. We've been able to do this for the vast majority of our ~550k citations in our data from 2011 through 2017, all using the `mutate()` and `case_when()` functions.
+In addition to adding variables like `year`, all we've really done here is classify the vehicle data in each citation into clean groups. For example, instead of "TOYA" / "TOYT", it just says "Toyota" now. We've also classified the Ford F-150 as a "Pickup", the Toyta Camry as a "Sedan", etc. We've been able to do this for the vast majority of the ~550k citations in our data from 2011 through 2017, all using the `mutate()` and `case_when()` functions.
+
+At this point, the relevant columns are cleaned up, and we have a good sense of what data are missing. I think we're finally ready to start answering our research question! Because tables are no fun and I'm sick of looking at them, let's do it by making some graphs instead. We'll use our good friend the `{ggplot2}` package to do so.
+
+## Data Analysis in RStudio -- analyzing and graphing your data
 
 
 ---
