@@ -101,7 +101,7 @@ If we run our script now, it'll load up all the needed libraries, then read in o
 
 ![image](https://github.com/openjusticeok/spi-2023/assets/56839927/4655efc8-efd3-49b6-aadc-0f8abaad49a6)
 
-## Data Analysis in RStudio -- exploring and cleaning up your data
+## Data Analysis in RStudio -- exploring your data
 
 To start digging into this dataset, let's try to answer the following questions:
 
@@ -158,11 +158,29 @@ okc_data |>
 
 Judging by our analysis and the [data guide](https://github.com/stanford-policylab/opp/blob/master/data_readme.md), it seems like we have full data coverage from 2012 to 2016 (we also have no info on make / model / color after 2017). We'll probably want to limit our analysis to those years to be sure we're using the best quality data. 
 
+## Can we answer our research question now?
+
+We have the data now -- can we just count to see which make / model / color is the most common?
+
+```
+okc_data |>
+  # The `mutate()` function is very common, and lets us add new columns.
+  mutate(
+    # The easiest way to answer our RQ is to smash make + model together into one variable...
+    vehicle_color_make_model = paste(vehicle_color, vehicle_make, vehicle_model)
+  ) |>
+  # ...then count() to see which is most common in the data
+  count(vehicle_color_make_model, sort = TRUE)
+
+```
+
 Unfortunately, like most data in the world of public policy, what remains is still very messy -- too messy to answer our research question without more work. Thus, the next step will be cleaning up the relevant columns. In this case, we'll need to pay special attention to the `vehicle_make`, `vehicle_model`, and `vehicle_color` columns.
 
+## Data Analysis in RStudio -- cleaning your data
+
 Our data cleaning tasks:
-- Clean up the `vehicle_make`, `vehicle_model`, and `vehicle_color` columns so that they're consistent and easy to read.
 - Filter out the data we're not interested in -- in this case, we don't need data from 2018 onward, and we don't need the rows corresponding to pedestrian citations (where `type` is `"pedestrian"`).
+- Clean up the `vehicle_make`, `vehicle_model`, and `vehicle_color` columns so that they're consistent and easy to read.
 
 The code below is what we'll use to explore and clean up our data, saving it as a new object named `okc_data_clean`. I know it looks like a lot, but don't worry -- it's not as complicated as it looks, and we'll go through it together step by step.
 
@@ -255,7 +273,7 @@ okc_data_clean <- okc_data |>
   )
 ```
 
-In addition to adding variables like `year`, all we've really done here is classify the vehicle data in each citation into clean groups. For example, instead of "TOYA" / "TOYT", it just says "Toyota" now. We've also classified the Ford F-150 as a "Pickup", the Toyta Camry as a "Sedan", etc. We've been able to do this for the vast majority of the ~550k citations in our data from 2011 through 2017, all using the `mutate()` and `case_when()` functions.
+In addition to adding variables like `year`, all we've really done here is classify the vehicle data in each citation into clean groups using the `mutate()` and `case_when()` functions. For example, instead of "TOYA" / "TOYT", it just says "Toyota" now. We've also classified the Ford F-150 as a "Pickup", the Toyta Camry as a "Sedan", etc. We've been able to do this for all of the ~550k citations in our data from 2011 through 2017.
 
 At this point, the relevant columns are cleaned up, and we have a good sense of what data are missing. I think we're finally ready to start answering our research question! Because tables are no fun and I'm sick of looking at them, let's do it by making some graphs instead. We'll use our good friend the `{ggplot2}` package to do so.
 
