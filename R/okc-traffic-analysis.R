@@ -22,17 +22,21 @@ View(okc_data)
 
 #  =============================================================================
 # How "complete" is the data?
-# This code returns a neat table showing the % of each column that are missing, or "NA"
-knitr::kable(colMeans(is.na(okc_data)) * 100)
+# This code returns a neat table showing the % of each column that are missing, or "NA":
+knitr::kable(colMeans(is.na(okc_data)))
 
 # As you can see, we can use multiple functions together to create interesting results
-# The "pipe" (`|>` or `%>%`) makes this a bit easier
-
-# This code shows how many rows we have per year (using the `date` column)
-# First, we take our data and use the |> to feed it into the `group_by()` function. 
-# We'll specify that we want to group the data by the year of the value in the date column.
+# The "pipe" (`|>` or `%>%`) makes this a bit easier; the code below is equivalent to the code above:
 okc_data |>
-  group_by(year = year(date)) |>
+  is.na() |>
+  colMeans() |>
+  knitr::kable()
+
+# How complete are the variables we're interested in? 
+# The code below shows how many rows we have per year (using the `date` column).
+# First, we take our data and use the |> to feed it into the `group_by()` function:
+okc_data |>
+  group_by(year = year(date)) |> # We want to group the data by the year of the value in the date column.
   # Now our data are grouped by the year of the citation. Next, we feed that into another function...
   count() # ...which simply counts the number of rows per group.
 
@@ -50,24 +54,21 @@ okc_data |>
 # Looks like we might want to filter our data to exclude years past 2018 -- we don't have data on make / model there!
 
 # ==============================================================================
-# Answering our research question -- transforming the data
+# Answering our research question -- can we do it already?
 
-# We're going to make a new dataset. We'll start with a copy of our original one...
-okc_data_clean <- okc_data |> # ...and then modify it from there.
+okc_data |>
   # The `mutate()` function is very common, and lets us add new columns.
   mutate(
-    # The easiest way to answer our RQ is to smash make + model together into one variable
+    # The easiest way to answer our RQ is to smash make + model together into one variable...
     vehicle_color_make_model = paste(vehicle_color, vehicle_make, vehicle_model)
-  )
-
-View(okc_data_clean) # Taking a look at our new column -- it's not very clean / readable.
-
-okc_data_clean |>
+  ) |>
+  # ...then count() to see which is most common in the data
   count(vehicle_color_make_model, sort = TRUE) |>
-  print(n = 25)
+  print(n = 30)
 
 # This is a decent start, but the messiness in the data is making it hard to tell.
 
+# ==============================================================================
 # Let's clean up our relevant columns a bit.
 # First, let's figure out what possible values there are for make, color, and model.
 okc_data |> 
@@ -85,11 +86,34 @@ okc_data |>
   arrange(desc(n)) |>
   print(n = 20)
 
-# Let's start by cleaning up the `color` column. Ideally we'd use a data dictionary / etc. to do this,
-# but since we don't have one, we'll have to use our best guess.
+# Now we have an idea of what we need to clean up.
+
+# Making a new dataset, okc_data_clean
+# Let's start by adding a `year` variable and filtering the data
 okc_data_clean <- okc_data |> 
   mutate(
     year = year(date), # Adding our `year` variable from before
+  ) |>
+  filter(
+    year >= 2011 & year <= 2017, # Removing the years with no make / model / color data
+    type != "pedestrian"  # Removing pedestrian citations
+  )
+
+# or...
+
+okc_data |> 
+  mutate(
+    year = year(date),
+  ) |>
+  filter(
+    year >= 2011 & year <= 2017, 
+    type != "pedestrian"
+  ) -> okc_data_clean # This is the same as above
+
+# Next, we'll clean up the `color` column. Ideally we'd use a data dictionary / etc. to do this,
+# but since we don't have one, we'll have to use our best guess.
+okc_data_clean <- okc_data_clean |> 
+  mutate(
     # `case_when()` lets us classify each possible value:
     vehicle_color_clean = case_when(
       vehicle_color == "BLK" ~ "Black", # "when `vehicle_color` is "BLK", change it to "Black"
@@ -104,7 +128,6 @@ okc_data_clean <- okc_data |>
       vehicle_color == "GLD" ~ "Gold",
       vehicle_color == "BRO" ~ "Brown",
       vehicle_color == "YEL" ~ "Yellow",
-      vehicle_color == "PLE" ~ "Unknown / Other", # I don't know what "PLE" means! Purple maybe?
       vehicle_color %in% c("BEI", "BGE") ~ "Beige", 
       vehicle_color %in% c("ONG", "ORG") ~ "Orange",
       vehicle_color == "DBL" ~ "Dark Blue", # Guessing a bit here -- should this be separate from "Blue"?
@@ -114,14 +137,11 @@ okc_data_clean <- okc_data |>
       vehicle_color == "TEA" ~ "Teal",
       vehicle_color == "CRM" ~ "Cream",
       vehicle_color == "PNK" ~ "Pink",
+      vehicle_color == "PLE" ~ "Unknown / Other", # I don't know what "PLE" means! Purple maybe?
       grepl("\\|", vehicle_color) ~ "Unknown / Other", # A few have multiple listed; gonna classify as "Unknown / Other" for now.
-      # TRUE ~ vehicle_color
-      TRUE ~ "Unknown / Other" # Everything else will be "Unknown / Other"
+      TRUE ~ vehicle_color
     )
-  ) |>
-  # We'll also filter out the data we're not interested in right now
-  filter(year >= 2011 & year <= 2017, # the years with no make / model / color data
-         type != "pedestrian") # pedestrian citations
+  )
 
 # That column looks a lot better now!
 okc_data_clean |> 
@@ -200,4 +220,4 @@ okc_data_clean |>
 # Analyzing the cleaned data ===================================================
 # Now, we can start to answer our research question! Let's break it down into parts. 
 # RQ 1: "What COLOR of car gets ticketed the most?"
-
+  
