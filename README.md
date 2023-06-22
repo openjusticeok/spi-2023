@@ -119,10 +119,12 @@ names(okc_data)
 
 # ==== How "complete" is the data? ====
 # This code returns a neat table showing the % of each column that are missing, or "NA"
+
 knitr::kable(colMeans(is.na(okc_data))) 
 
 # As you can see, we can use multiple functions together to create interesting results.
 # The "pipe" (`|>` or `%>%`) makes this a bit easier; the code below is equivalent to the code above:
+
 okc_data |>
   is.na() |>
   colMeans() |>
@@ -130,16 +132,19 @@ okc_data |>
 
 # We want to think of it as a pipeline -- we start with the "raw" data, `okc_data`, and we transform it using functions connected by pipes to create a useful result.
 
-# ==== How complete are the variables we're interested in? ====
+# ==== Is there more / less data in some years than others? ====
 # The code below shows how many rows we have per year (using the `date` column).
 # First, we take our data and use the |> to feed it into the `group_by()` function.
+
 okc_data |>
   group_by(year = year(date)) |> # We want to group the data by the year of the value in the date column.
-  # Now our data are grouped by the year of the citation. Next, we feed that into another function...
+  # Now our data are grouped by the year of the citation. Next, we pipe that into another function...
   count() # ...which simply counts the number of rows per group.
 
+# ==== How complete are the variables we're interested in? ====
 # We can combine the `group_by()`` and `summarize()` functions using pipes to get 
-# a better idea of what the variables relevant to our RQ look like. 
+# a better idea of what the variables relevant to our RQ look like.
+
 okc_data |>
   group_by(year = year(date)) |>
   summarize(
