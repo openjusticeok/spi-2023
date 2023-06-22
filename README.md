@@ -114,21 +114,27 @@ You can give the data a look by simply clicking on it in the Environment panel, 
 We can also write some code to give us a more fine-tuned look. Below is some of the R code we'll use to explore our dataset. We'll go through what it does and how it works together:
 
 ```
-# What variables are there in the data?
+# ==== What variables are there in the data? ====
 names(okc_data)
 
-# ==== How "complete" is the data? ==================================================
+# ==== How "complete" is the data? ====
 # This code returns a neat table showing the % of each column that are missing, or "NA"
-knitr::kable(colMeans(is.na(okc_data)) * 100) 
+knitr::kable(colMeans(is.na(okc_data))) 
 
-# As you can see, we can use multiple functions together to create interesting results
-# The "pipe" (`|>` or `%>%`) makes this a bit easier
-
-# This code shows how many rows we have per year (using the `date` column)
-# First, we take our data and use the |> to feed it into the `group_by()` function. 
-# We'll specify that we want to group the data by the year of the value in the date column.
+# As you can see, we can use multiple functions together to create interesting results.
+# The "pipe" (`|>` or `%>%`) makes this a bit easier; the code below is equivalent to the code above:
 okc_data |>
-  group_by(year = year(date)) |>
+  is.na() |>
+  colMeans() |>
+  knitr::kable()
+
+# We want to think of it as a pipeline -- we start with the "raw" data, `okc_data`, and we transform it using functions connected by pipes to create a useful result.
+
+# ==== How complete are the variables we're interested in? ====
+# The code below shows how many rows we have per year (using the `date` column).
+# First, we take our data and use the |> to feed it into the `group_by()` function.
+okc_data |>
+  group_by(year = year(date)) |> # We want to group the data by the year of the value in the date column.
   # Now our data are grouped by the year of the citation. Next, we feed that into another function...
   count() # ...which simply counts the number of rows per group.
 
