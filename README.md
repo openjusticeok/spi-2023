@@ -193,13 +193,32 @@ Our data cleaning tasks:
 The code below is what we'll use to explore and clean up our data, saving it as a new object named `okc_data_clean`. I know it looks like a lot, but don't worry -- it's not as complicated as it looks, and we'll go through it together step by step.
 
 ```
-okc_data_clean <- okc_data |>
+# Let's start by adding a `year` variable and filtering the data
+okc_data_clean <- okc_data |> 
+  mutate(
+    year = year(date), # Adding our `year` variable from before
+  ) |>
   filter(
-    year >= 2011 & year <= 2017, # removing the years with no make / model / color data
-    type != "pedestrian"
-  ) |> # removing pedestrian citations
+    year >= 2011 & year <= 2017, # Removing the years with no make / model / color data
+    type != "pedestrian"  # Removing pedestrian citations
+  )
+
+# or...
+
+okc_data |> 
   mutate(
     year = year(date),
+  ) |>
+  filter(
+    year >= 2011 & year <= 2017, 
+    type != "pedestrian"
+  ) -> okc_data_clean # This is the same as above
+
+# Next, we'll clean up the `color` column. Ideally we'd use a data dictionary / etc. to do this,
+# but since we don't have one, we'll have to use our best guess.
+okc_data_clean <- okc_data_clean |> 
+  mutate(
+    # `case_when()` lets us classify each possible value:
     vehicle_color_clean = case_when(
       vehicle_color == "BLK" ~ "Black", # "when `vehicle_color` is "BLK", change it to "Black"
       vehicle_color == "WHI" | vehicle_color == "WHT" ~ "White", # when `vehicle_color` is "WHI" or "WHT", change it to "White".
@@ -213,7 +232,6 @@ okc_data_clean <- okc_data |>
       vehicle_color == "GLD" ~ "Gold",
       vehicle_color == "BRO" ~ "Brown",
       vehicle_color == "YEL" ~ "Yellow",
-      vehicle_color == "PLE" ~ "Unknown / Other", # I don't know what "PLE" means! Purple maybe?
       vehicle_color %in% c("BEI", "BGE") ~ "Beige", 
       vehicle_color %in% c("ONG", "ORG") ~ "Orange",
       vehicle_color == "DBL" ~ "Dark Blue", # Guessing a bit here -- should this be separate from "Blue"?
@@ -223,10 +241,22 @@ okc_data_clean <- okc_data |>
       vehicle_color == "TEA" ~ "Teal",
       vehicle_color == "CRM" ~ "Cream",
       vehicle_color == "PNK" ~ "Pink",
+      vehicle_color == "PLE" ~ "Unknown / Other", # I don't know what "PLE" means! Purple maybe?
       grepl("\\|", vehicle_color) ~ "Unknown / Other", # A few have multiple listed; gonna classify as "Unknown / Other" for now.
-      # TRUE ~ vehicle_color
-      TRUE ~ "Unknown / Other" # Everything else will be "Unknown / Other"
-    ),
+      TRUE ~ vehicle_color
+    )
+  )
+
+# That column looks a lot better now!
+okc_data_clean |> 
+  count(vehicle_color_clean) |> 
+  arrange(desc(n)) |>
+  print(n = 20)
+
+# Let's clean up the `vehicle_make` and `vehicle_model` columns next.
+# This time we'll just modify our existing dataset, so we can keep our new columns / avoid having to re-filter
+okc_data_clean <- okc_data_clean |> 
+  mutate(
     vehicle_make_clean = case_when(
       vehicle_make == "CHEV" ~ "Chevy", # Same basic idea as before. We'll cover the top 25 or so most common ones.
       vehicle_make == "FORD" ~ "Ford",
@@ -279,9 +309,21 @@ okc_data_clean <- okc_data |>
       TRUE ~ vehicle_model
     )
   )
+    
+# These columns also looks a lot better now!
+okc_data_clean |> 
+  count(vehicle_make_clean) |> 
+  arrange(desc(n)) |>
+  print(n = 20)
+
+okc_data_clean |> 
+  count(vehicle_model_clean) |> 
+  arrange(desc(n)) |>
+  print(n = 20)
+
 ```
 
-In addition to adding variables like `year`, all we've really done here is classify the vehicle data in each citation into clean groups using the `mutate()` and `case_when()` functions. For example, instead of "TOYA" / "TOYT", it just says "Toyota" now. We've also classified the Ford F-150 as a "Pickup", the Toyta Camry as a "Sedan", etc. We've been able to do this for all of the ~550k citations in our data from 2011 through 2017.
+In addition to filtering the data and adding the `year` variable, all we've really done here is classify the vehicle data into clean groups using the `mutate()` and `case_when()` functions. For example, instead of "TOYA" / "TOYT", it just says "Toyota" now. We've also classified the Ford F-150 as a "Pickup", the Toyta Camry as a "Sedan", etc. We've been able to do this for all of the ~550k citations in our filtered data.
 
 At this point, the relevant columns are cleaned up, and we have a good sense of what data are missing. I think we're finally ready to start answering our research question! Because tables are no fun and I'm sick of looking at them, let's do it by making some graphs instead. We'll use our good friend the `{ggplot2}` package to do so.
 
