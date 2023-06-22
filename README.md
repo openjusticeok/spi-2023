@@ -5,7 +5,7 @@
 ## Presentation Outline:
 
 1) Where do you get data from?
-2) How do you get data into R / RStudio?
+2) How and why do you get data into R / RStudio?
 3) How and why do you "clean" data with R?
 4) How do you analyze / graph data with R?
 5) What other cools stuff is possible with R?
@@ -38,13 +38,13 @@ A collection of other helpful data sources for public policy research:
 - [US Census -- tons of data on who lives where and what their lives are like, with a great search interface](https://data.census.gov/)
 - 
 
-## Examining our Data: The Wonderful World of R
+## 2. Examining our Data: The Wonderful World of R
 
 Our OKC traffic stop data has nearly 1,000,000 rows -- that's great! But if we try to open a dataset that large in a program like Google Sheets, Microsoft Excel, or LibreOffice Calc, our computers are probably going to throw a fit. So we're going to turn to [The R statistical programming language](https://www.r-project.org/about.html). 
 
 If Excel is a Toyota Camry, R is a custom-built Formula 1 car -- both can get you where you need to go most of the time, but R lets us do more, do it faster, and do it with much larger datasets. It's popular with academics and researchers in particular, and it's what Open Justice Oklahoma uses for most of our work. And best of all, it's entirely free and open source! We'll start by getting R all set up on our computers, then we'll open up our dataset and get analyzing.
 
-### 2. Installing R and RStudio
+### Installing R and RStudio
 
 We'll start by making sure the R language is installed on our computers. We'll also install RStudio, and integrated development environment (IDE) made for doing data analysis in R. Here's a good guide on how to install both: https://rstudio-education.github.io/hopr/starting.html
 
