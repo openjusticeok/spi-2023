@@ -16,7 +16,7 @@ We're going to see if we can find data to shed light on the following research q
 
 To answer this, we'll need to find some good quality data on traffic citation issuances in Oklahoma City. Ideally, we'd like the data to cover multiple years, and we'll need to be able to see details like the vehicle's make, model, color, etc. If we want to look at more serious aspects of traffic stops, we should also look for data that includes informaiton on the driver, such as their race, gender, age, etc.
 
-## Finding Data Sources
+## 1. Finding Data Sources
 
 We're going to start from absolutely nothing and simply fire up our favorite search engine. We'll vary our search terms (e.g. "traffic citation" vs. "traffic stop") and include some modifiers like "dataset", "GitHub", etc. and see what we can come up with. We'll steer clear of ad-ridden, low-quality, "anyone can upload" sites like Kaggle, Data.World, etc.
 
@@ -44,7 +44,7 @@ Our OKC traffic stop data has nearly 1,000,000 rows -- that's great! But if we t
 
 If Excel is a Toyota Camry, R is a custom-built Formula 1 car -- both can get you where you need to go most of the time, but R lets us do more, do it faster, and do it with much larger datasets. It's popular with academics and researchers in particular, and it's what Open Justice Oklahoma uses for most of our work. And best of all, it's entirely free and open source! We'll start by getting R all set up on our computers, then we'll open up our dataset and get analyzing.
 
-### Installing R and RStudio
+### 2. Installing R and RStudio
 
 We'll start by making sure the R language is installed on our computers. We'll also install RStudio, and integrated development environment (IDE) made for doing data analysis in R. Here's a good guide on how to install both: https://rstudio-education.github.io/hopr/starting.html
 
@@ -109,7 +109,7 @@ If we run our script now, it'll load up all the needed libraries, then read in o
 
 ![image](https://github.com/openjusticeok/spi-2023/assets/56839927/4655efc8-efd3-49b6-aadc-0f8abaad49a6)
 
-## Data Analysis in RStudio -- exploring your data
+## 2.5 Data Analysis in RStudio -- exploring your data
 
 To start digging into this dataset, let's try to answer the following questions:
 
@@ -184,7 +184,7 @@ okc_data |>
 
 Unfortunately, like most data in the world of public policy, what remains is still very messy -- too messy to answer our research question without more work. Thus, the next step will be cleaning up the relevant columns. In this case, we'll need to pay special attention to the `vehicle_make`, `vehicle_model`, and `vehicle_color` columns.
 
-## Data Analysis in RStudio -- cleaning your data
+## 3. Data Analysis in RStudio -- cleaning your data
 
 Our data cleaning tasks:
 - Filter out the data we're not interested in -- in this case, we don't need data from 2018 onward, and we don't need the rows corresponding to pedestrian citations (where `type` is `"pedestrian"`).
@@ -285,7 +285,7 @@ In addition to adding variables like `year`, all we've really done here is class
 
 At this point, the relevant columns are cleaned up, and we have a good sense of what data are missing. I think we're finally ready to start answering our research question! Because tables are no fun and I'm sick of looking at them, let's do it by making some graphs instead. We'll use our good friend the `{ggplot2}` package to do so.
 
-## Data Analysis in RStudio -- analyzing and graphing your data
+## 4. Data Analysis in RStudio -- analyzing and graphing your data
 
 
 ---
