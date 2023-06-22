@@ -2,6 +2,14 @@
 
 > For the OKC SPI session, Research Team will be presenting a start-to-finish guide on the entire process of taking a research question and turning it into data-based visualizations and analyses, using Oklahoma City traffic citation data as a case study. We will cover how to search for public data, both in the criminal justice space and in others, as well as the basics of how to analyze that data in R, including turning it charts, tables, and maps. By the end, attendees will have a list of useful data sources and knowledge on how to find new ones, a basic understanding of how to make use of them using R or Excel, and the answer to our research question -- "in Oklahoma City, what color and type of car gets ticketed the most?"
 
+## Presentation Outline:
+
+1) Where do you get data from?
+2) How do you get data into R / RStudio?
+3) How and why do you "clean" data with R?
+4) How do you analyze / graph data with R?
+5) What other cools stuff is possible with R?
+
 ## Our Research Question
 
 We're going to see if we can find data to shed light on the following research question: "In Oklahoma City, what **color** and **type** of car gets ticketed the most?"
