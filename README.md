@@ -27,7 +27,7 @@
 ## Learning / using R
 
 **R Books:**
-- ["R for Data Science"](https://r4ds.had.co.nz/) -- the industry-standard guide to R. It can teach you how to do everything in this presentation and much more (available for free online)
+- ["R for Data Science"](https://r4ds.had.co.nz/) -- the industry-standard guide to R. It can teach you how to do everything in this repo and much more (available for free online)
 - [The R Graphics Cookbook](http://www.cookbook-r.com/) -- a detailed guide to styling R plots and other graphics (available for free online)
 - [The Posit Library](https://www.rstudio.com/resources/books/) -- a collection of books covering everything from generating websites with {bookdown} to finance analysis with {shiny}. Includes both of the above (all available for free online)
 
