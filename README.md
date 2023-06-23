@@ -10,6 +10,14 @@
 4) How do you analyze / graph data with R?
 5) What other cools stuff is possible with R?
 
+**Note:** We're going to be covering quite a bit of ground, so I want to emphasize that the goal here is not for you to memorize / understand each and every thing I'm doing here. Our goal is for you to learn:
+- Why R is useful
+- How to install R and RStudio
+- The basics of loading and exploring data in R
+- A general sense of what's possible with R
+
+In other words, don't feel like you're missing something or falling behind if some of this is confusing! If you decide R is something you want to dive into deeper, you can use the free books and resources linked in this GitHub repo to get up and running yourself.
+
 ## Our Research Question
 
 We're going to see if we can find data to shed light on the following research question: "In Oklahoma City, what **color** and **type** of car gets ticketed the most?"
