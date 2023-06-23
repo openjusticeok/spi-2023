@@ -88,7 +88,6 @@ okc_data |>
 
 # Now we have an idea of what we need to clean up.
 
-# Making a new dataset, okc_data_clean
 # Let's start by adding a `year` variable and filtering the data
 okc_data_clean <- okc_data |> 
   mutate(
@@ -130,16 +129,17 @@ okc_data_clean <- okc_data_clean |>
       vehicle_color == "YEL" ~ "Yellow",
       vehicle_color %in% c("BEI", "BGE") ~ "Beige", 
       vehicle_color %in% c("ONG", "ORG") ~ "Orange",
-      vehicle_color == "DBL" ~ "Dark Blue", # Guessing a bit here -- should this be separate from "Blue"?
-      vehicle_color == "LBL" ~ "Light Blue", # Same as above,
-      vehicle_color == "LGR" ~ "Light Gray",
-      vehicle_color == "DGR" ~ "Dark Gray",
+      vehicle_color == "DBL" ~ "Blue", # Guessing a bit here -- should this be separate from "Blue"?
+      vehicle_color == "LBL" ~ "Blue", # Same as above,
+      vehicle_color == "LGR" ~ "Gray",
+      vehicle_color == "DGR" ~ "Gray",
       vehicle_color == "TEA" ~ "Teal",
       vehicle_color == "CRM" ~ "Cream",
       vehicle_color == "PNK" ~ "Pink",
       vehicle_color == "PLE" ~ "Unknown / Other", # I don't know what "PLE" means! Purple maybe?
       grepl("\\|", vehicle_color) ~ "Unknown / Other", # A few have multiple listed; gonna classify as "Unknown / Other" for now.
-      TRUE ~ vehicle_color
+      # TRUE ~ vehicle_color
+      TRUE ~ "Unknown / Other"
     )
   )
 
@@ -178,8 +178,8 @@ okc_data_clean <- okc_data_clean |>
       vehicle_make == "LINC" ~ "Lincoln",
       vehicle_make == "INFI" ~ "Infiniti",
       vehicle_make == "ACUR" ~ "Acura",
-      TRUE ~ vehicle_make
-      # TRUE ~ "Unknown / Other"
+      # TRUE ~ vehicle_make
+      TRUE ~ "Unknown / Other"
     ),
     # For the vehicle model, I'm going to clean it up into broader groups like "Pickup", "Sedan", etc.
     # If we want to look at specific models later, we can just use the original variable
@@ -202,7 +202,8 @@ okc_data_clean <- okc_data_clean |>
       vehicle_model == "350" & vehicle_make_clean == "Mercedes" ~ "Sports Car", # Mercedes 350
       vehicle_model == "350" & vehicle_make_clean == "Ford" ~ "Pickup", # F-350
       vehicle_model == "350" & vehicle_make_clean == "Nissan" ~ "Sports Car", # Nissan 350
-      TRUE ~ vehicle_model
+      # TRUE ~ vehicle_model
+      TRUE ~ "Unknown / Other"
     )
   )
     
@@ -217,7 +218,193 @@ okc_data_clean |>
   arrange(desc(n)) |>
   print(n = 20)
 
+# What would it look like to clean other parts of this data? 
+summary(okc_data_clean$speed)
+summary(okc_data_clean$subject_age)
+
+
 # Analyzing the cleaned data ===================================================
-# Now, we can start to answer our research question! Let's break it down into parts. 
-# RQ 1: "What COLOR of car gets ticketed the most?"
-  
+# Now, we can start to answer our research question! Let's make some graphs! 
+
+# ggplot2 example:
+# First we make the graph itself and tell it what data to use...
+ggplot(data = okc_data_clean,
+       aes(x = subject_age)) +
+  # ...then we tell it what to draw with that data
+  geom_histogram()
+
+# Bar chart to answer the "vehicle make" part of our research question ---------
+okc_data_clean |>
+  filter(!is.na(vehicle_make_clean)) |>
+  count(vehicle_make_clean) |>
+  ggplot(aes(x = vehicle_make_clean,
+             y = n)) +
+  geom_col() 
+
+# # Not very pretty... let's tidy it up a bit and save it as a new object:
+chart_make <- okc_data_clean |>
+  filter(!is.na(vehicle_make_clean)) |>
+  count(vehicle_make_clean) |>
+  ggplot(aes(x = reorder(vehicle_make_clean, n),
+             y = n)) +
+  coord_flip() +
+  scale_y_continuous(labels = scales::comma) +
+  labs(title = "OKC Traffic Citations by Make of Cited Vehicle",
+       subtitle = paste0("All vehicle citations issued ", min(okc_data_clean$year), " through ", max(okc_data_clean$year)),
+       caption = "Data from https://openpolicing.stanford.edu/data/") +
+  geom_col() +
+  ggthemes::theme_fivethirtyeight()
+
+chart_make
+
+# Vehicle color ----------------------------------------------------------
+# We can add custom scales and colors:
+color_scale <- c("White" = "white", "Black" = "black",
+                 "Silver" = "azure2", "Red" = "red",
+                 "Gray" = "darkgray", "Blue" = "blue4",
+                 "Unknown / Other" = "gray30", "Maroon" = "red4",
+                 "Green" = "seagreen", "Tan" = "papayawhip",
+                 "Gold" = "yellow4", "Brown" = "tan4",
+                 "Yellow" = "yellow", "Orange" = "orange",
+                 "Beige" = "wheat", "Teal" = "turquoise",
+                 "Cream" = "seashell", "Pink" = "pink") 
+
+okc_data_clean |>
+  group_by(vehicle_color_clean) |>
+  summarize(n = n()) |>
+  ggplot(aes(x = reorder(vehicle_color_clean, n), # Reorders our columns by `n`
+             y = n,
+             fill = vehicle_color_clean)) +
+  geom_col(color = "black") +
+  coord_flip() + # Flips X and Y axes
+  # Some nice captions / labels
+  labs(title = "OKC Traffic Citations by Color of Cited Vehicle",
+       subtitle = paste0("All vehicle citations issued ", min(okc_data_clean$year), " through ", max(okc_data_clean$year)),
+       caption = "Data from https://openpolicing.stanford.edu/data/") +
+  scale_fill_manual(values = color_scale) +
+  scale_y_continuous(labels = scales::comma) +
+  guides(fill = "none") +
+  ggthemes::theme_fivethirtyeight() # A sweet pre-built theme!
+
+# Vehicle Model, but I'm sick of bar charts ------------------------------------
+okc_data_clean |>
+  filter(vehicle_model_clean != "Unknown / Other",
+         year >= 2012 & year <= 2017) |>
+  group_by(vehicle_model_clean,
+           month = floor_date(date, "months")) |>
+  summarize(n = n()) |>
+  ggplot(aes(x = month,
+             y = n,
+             color = vehicle_model_clean)) +
+  geom_line(linewidth = 1.5) +
+  geom_point(size = 2) +
+  labs(title = "OKC Traffic Citations by Vehicle Model Type",
+       subtitle = paste0("All vehicle citations issued ", min(okc_data_clean$year), " through ", max(okc_data_clean$year)),
+       caption = "Data from https://openpolicing.stanford.edu/data/",
+       x = "Year of Citation",
+       y = "Total Citations Issued") +
+  scale_y_continuous(labels = scales::comma) +
+  scale_color_viridis_d("Vehicle Type") +
+  ggthemes::theme_gdocs()
+
+# Other cool charts you can make -----------------------------------------------
+
+# Facets make it easy to break out graphs with extra variables  ----
+# We can swap `subject_sex` with `subject_race` here and get the same graph 
+okc_data_clean |>
+  filter(!is.na(subject_sex)) |>
+  group_by(vehicle_color_clean, subject_sex) |>
+  summarize(n = n()) |>
+  ggplot(aes(x = tidytext::reorder_within(vehicle_color_clean, n, subject_sex),
+             y = n,
+             fill = vehicle_color_clean)) +
+  geom_col(color = "black") +
+  coord_flip() + 
+  labs(title = "OKC Traffic Citations by Color of Cited Vehicle",
+       subtitle = paste0("All vehicle citations issued ", min(okc_data_clean$year), " through ", max(okc_data_clean$year)),
+       caption = "Data from https://openpolicing.stanford.edu/data/") +
+  scale_fill_manual(values = color_scale) +
+  scale_y_continuous(labels = scales::comma) +
+  tidytext::scale_x_reordered() +
+  guides(fill = "none") +
+  facet_wrap(~subject_sex, scales = "free") +
+  ggthemes::theme_fivethirtyeight()
+
+# Interactive graphs ----
+library(plotly)
+
+ggplotly(chart_make)
+
+# Maps ----
+library(sf)
+library(ggspatial)
+library(tidycensus)
+library(tigris)
+
+okc_shape <- zctas(state = "Oklahoma", year = 2010)
+uas <- urban_areas()
+okc_ua <- uas[grep("Oklahoma City", uas$NAME10), ]
+okc_shape <- okc_shape[okc_ua, ]
+okc_shape <- okc_shape |>
+  select(zip = GEOID10) |>
+  st_transform(4326) 
+
+sf_okc_citation_locations <- okc_data_clean |>
+  filter(!is.na(lng), !is.na(lat)) |>
+  st_as_sf(coords = c("lng", "lat"), remove = FALSE) |>
+  mutate(year = year(date)) |>
+  st_set_crs(st_crs(okc_shape))
+
+sample <- sf_okc_citation_locations |>
+  slice_sample(prop = 0.1)
+
+ggplot(okc_shape) +
+  annotation_map_tile(zoomin = 2) +
+  stat_density_2d_filled(data = sample,
+                         aes(x = lng, 
+                             y = lat,
+                             alpha = after_stat(level)),
+                         contour_var = "count",
+                         show.legend = FALSE) +
+  geom_point(data = sample,
+             aes(x = lng, y = lat),
+             shape = 1,
+             size = 0.5,
+             alpha = 0.1,
+             color = "black") +
+  geom_sf(alpha = 0,
+          size = 0) +
+  lims(x = c(-97.75, -97.35),
+       y = c(35.32, 35.6)) +
+  scale_fill_viridis_d(option = "turbo") +
+  scale_alpha_manual(values = c(0, rep(0.5, 13))) +
+  guides(alpha = "none") +
+  ggthemes::theme_map()
+
+# Answering our research question ==============================================
+
+# Looking at all data:
+okc_data_clean |>
+  mutate(
+    vehicle_color_make_model = paste(vehicle_color_clean, vehicle_make_clean, vehicle_model_clean)
+  ) |>
+  count(vehicle_color_make_model, sort = TRUE) |>
+  print(n = 10)
+
+# Looking at only data with complete make, model, color info:
+okc_data_clean |>
+  filter(!is.na(vehicle_model), !is.na(vehicle_make), !is.na(vehicle_color)) |>
+  mutate(
+    vehicle_color_make_model = paste(vehicle_color_clean, vehicle_make_clean, vehicle_model_clean)
+  ) |>
+  count(vehicle_color_make_model, sort = TRUE) |>
+  print(n = 20)
+
+# The answer: it depends on how you look at it! But maybe keep an eye on black / white pickup trucks from Chevy / Ford
+
+# Where can we go from here?
+# - This doesn't tell us much about the behavior of each car types' drivers. Can we make these numbers per capita?
+# - Can we apply this same code / approach to a national dataset?
+# - Can we look closer at geography? Maybe its relation to race, vehicle type, etc.?
+
+
