@@ -426,6 +426,39 @@ okc_data_clean |>
 
 > Note the missing data in the latter months! We'd probably want to cut it off a bit earlier.
 
+### Answering our Research Question
+
+Now that we've cleaned up our data and made some graphs, I think we have a pretty good sense of the answer to our research question! Like all research in public policy, the answer starts with "Well, it depends" -- we don't have complete data for this timespan, and we don't have the best sense of what's missing or how the data were collected. From what we do have, though we can see that **white cars**, **Chevy and Ford cars**, and **sedans and pickups** seem to get ticketed the most. 
+
+```
+# Looking at all data:
+okc_data_clean |>
+  mutate(
+    vehicle_color_make_model = paste(vehicle_color_clean, vehicle_make_clean, vehicle_model_clean)
+  ) |>
+  count(vehicle_color_make_model, sort = TRUE) |>
+  print(n = 10)
+
+# Looking at only data with complete make, model, color info:
+okc_data_clean |>
+  filter(!is.na(vehicle_model), !is.na(vehicle_make), !is.na(vehicle_color)) |>
+  mutate(
+    vehicle_color_make_model = paste(vehicle_color_clean, vehicle_make_clean, vehicle_model_clean)
+  ) |>
+  count(vehicle_color_make_model, sort = TRUE) |>
+  print(n = 20)
+
+# The answer: it depends on how you look at it! But maybe keep an eye on black / white pickup trucks from Chevy / Ford
+```
+
+We've only just scraped the surface of this data. What else could we do with it?
+
+- This doesn't tell us much about the behavior of each car types' drivers. Can we make these numbers *per capita*? What additional data would we need?
+- Can we apply this same code / approach to a national dataset?
+- Can we look closer at geography? Maybe its relation to race, vehicle type, etc.?
+
+If I did my job well, you now have a basic understanding of what R can do for you. I'm also hoping the resources linked in this GitHub repo will enable you to go off and tinker with R on your own -- remember, you can use and learn all of the stuff I've showed off (and much more!) for **free!** You don't have to buy or subscribe to R or RStudio, since they're free and open source, and there's a huge community of helpful and very smart people whose shoulders you can stand on. If you are interested in using data in any way in your public policy work, I can't recommend it enough!
+
 ## 5. What else can we do with R?
 
 I've included code in our script (`R/okc-traffic-analysis.R`) that shows how to do a few more complex visualizations with this data. We'll go through them briefly, just to show you how powerful R can be:
@@ -441,6 +474,11 @@ I've included code in our script (`R/okc-traffic-analysis.R`) that shows how to 
 **Geospatial Maps:** There are very powerful tools for map-making and geographical analysis in R. I used the `{tigris}` package to download shape files and map tiles, all without having to leave RStudio.
 
 ![image](https://github.com/openjusticeok/spi-2023/assets/56839927/096ed864-54cb-49da-b267-6d0313a78f80)
+
+**Interactive Dashboards:** This dashbaord is one we made for the Oklahoma Criminal Justice Advisory Council. You can see the live version [here](https://cjac-dashboard-isk53p4yuq-uc.a.run.app/).
+
+![image](https://github.com/openjusticeok/spi-2023/assets/56839927/04862e29-df29-46b1-b850-73186b653b08)
+
 
 ---
 # SPI Session 2: Tulsa (July 20-21, 2023)
