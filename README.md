@@ -430,17 +430,17 @@ okc_data_clean |>
 
 I've included code in our script (`R/okc-traffic-analysis.R`) that shows how to do a few more complex visualizations with this data. We'll go through them briefly, just to show you how powerful R can be:
 
+**Faceting:** We can break our graphs down even further, breaking it out into multiple graphs using other variables, like race and gender for example.
+
 ![image](https://github.com/openjusticeok/spi-2023/assets/56839927/40b0e3ce-3686-4b01-aad5-2a6e6736a7e5)
 
-> **Faceting:** We can break our graphs down even further, breaking it out into multiple graphs using other variables, like race and gender for example.
+**Interactivity:** There are awesome libraries that can turn your static graphs into interactive ones! You can customize them and put them on a website, a Shiny app, etc.
 
 ![image](https://github.com/openjusticeok/spi-2023/assets/56839927/037ffcaa-da56-4b49-845a-ec4411bfa051)
 
-> **Interactivity:** There are awesome libraries that can turn your static graphs into interactive ones! You can customize them and put them on a website, a Shiny app, etc.
+**Geospatial Maps:** There are very powerful tools for map-making and geographical analysis in R. I used the `{tigris}` package to download shape files and map tiles, all without having to leave RStudio.
 
 ![image](https://github.com/openjusticeok/spi-2023/assets/56839927/096ed864-54cb-49da-b267-6d0313a78f80)
-
-> **Geospatial Maps:** There are very powerful tools for map-making and geographical analysis in R. I used the `{tigris}` package to download shape files and map tiles, all without having to leave RStudio.
 
 ---
 # SPI Session 2: Tulsa (July 20-21, 2023)
