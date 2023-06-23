@@ -398,7 +398,7 @@ okc_data_clean |>
 
 ![image](https://github.com/openjusticeok/spi-2023/assets/56839927/cc986338-4075-412e-b9db-37870bd71238)
 
-> Snazzy!
+> Snazzy! We've added a custom color scale where I picked each color myself. There are lots of pre-made ones for all sorts of purposes, though.
 
 ```
 okc_data_clean |>
