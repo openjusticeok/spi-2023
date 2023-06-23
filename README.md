@@ -329,6 +329,118 @@ At this point, the relevant columns are cleaned up, and we have a good sense of 
 
 ## 4. Data Analysis in RStudio -- analyzing and graphing your data
 
+We'll start with a chart to answer the "vehicle make" part of our research question. We can turn our data into a nice graph with just a few commands:
+
+```
+okc_data_clean |>
+  filter(!is.na(vehicle_make_clean)) |>
+  count(vehicle_make_clean) |>
+  ggplot(aes(x = vehicle_make_clean,
+             y = n)) +
+  geom_col() 
+```
+
+![image](https://github.com/openjusticeok/spi-2023/assets/56839927/d78d7935-69e4-4cc3-a442-4203d5a12b46)
+
+
+It's not very pretty, but it tells us what we want to know! We can clearly see that Chevy was the most common maker of the cars cited in our data. We can make this more `a e s t h e t i c` with just a few more commands: 
+
+```
+okc_data_clean |>
+  filter(!is.na(vehicle_make_clean)) |>
+  count(vehicle_make_clean) |>
+  ggplot(aes(x = reorder(vehicle_make_clean, n),
+             y = n)) +
+  coord_flip() +
+  scale_y_continuous(labels = scales::comma) +
+  labs(title = "OKC Traffic Citations by Make of Cited Vehicle",
+       subtitle = paste0("All vehicle citations issued ", min(okc_data_clean$year), " through ", max(okc_data_clean$year)),
+       caption = "Data from https://openpolicing.stanford.edu/data/") +
+  geom_col() +
+  ggthemes::theme_fivethirtyeight()
+```
+
+![image](https://github.com/openjusticeok/spi-2023/assets/56839927/ec76f972-93da-4be3-b159-2d1d5c2e3031)
+
+Nice! If we wanted to, we could even add the company logos with the `{ggimage}` package.
+
+We'll make two more charts, one for vehicle color and one for vehicle model:
+
+```
+# We can add custom scales and colors:
+color_scale <- c("White" = "white", "Black" = "black",
+                 "Silver" = "azure2", "Red" = "red",
+                 "Gray" = "darkgray", "Blue" = "blue4",
+                 "Unknown / Other" = "gray30", "Maroon" = "red4",
+                 "Green" = "seagreen", "Tan" = "papayawhip",
+                 "Gold" = "yellow4", "Brown" = "tan4",
+                 "Yellow" = "yellow", "Orange" = "orange",
+                 "Beige" = "wheat", "Teal" = "turquoise",
+                 "Cream" = "seashell", "Pink" = "pink") 
+
+okc_data_clean |>
+  group_by(vehicle_color_clean) |>
+  summarize(n = n()) |>
+  ggplot(aes(x = reorder(vehicle_color_clean, n), # Reorders our columns by `n`
+             y = n,
+             fill = vehicle_color_clean)) +
+  geom_col(color = "black") +
+  coord_flip() + # Flips X and Y axes
+  # Some nice captions / labels
+  labs(title = "OKC Traffic Citations by Color of Cited Vehicle",
+       subtitle = paste0("All vehicle citations issued ", min(okc_data_clean$year), " through ", max(okc_data_clean$year)),
+       caption = "Data from https://openpolicing.stanford.edu/data/") +
+  scale_fill_manual(values = color_scale) +
+  scale_y_continuous(labels = scales::comma) +
+  guides(fill = "none") +
+  ggthemes::theme_fivethirtyeight() # A sweet pre-built theme!
+```
+
+![image](https://github.com/openjusticeok/spi-2023/assets/56839927/cc986338-4075-412e-b9db-37870bd71238)
+
+> Snazzy!
+
+```
+okc_data_clean |>
+  filter(vehicle_model_clean != "Unknown / Other",
+         year >= 2012 & year <= 2017) |>
+  group_by(vehicle_model_clean,
+           month = floor_date(date, "months")) |>
+  summarize(n = n()) |>
+  ggplot(aes(x = month,
+             y = n,
+             color = vehicle_model_clean)) +
+  geom_line(linewidth = 1.5) +
+  geom_point(size = 2) +
+  labs(title = "OKC Traffic Citations by Vehicle Model Type",
+       subtitle = paste0("All vehicle citations issued ", min(okc_data_clean$year), " through ", max(okc_data_clean$year)),
+       caption = "Data from https://openpolicing.stanford.edu/data/",
+       x = "Year of Citation",
+       y = "Total Citations Issued") +
+  scale_y_continuous(labels = scales::comma) +
+  scale_color_viridis_d("Vehicle Type") +
+  ggthemes::theme_gdocs()
+```
+
+![image](https://github.com/openjusticeok/spi-2023/assets/56839927/f89455f2-6c97-491e-88fe-5ba52744e397)
+
+> Note the missing data in the latter months! We'd probably want to cut it off a bit earlier.
+
+## 5. What else can we do with R?
+
+I've included code in our script (`R/okc-traffic-analysis.R`) that shows how to do a few more complex visualizations with this data. We'll go through them briefly, just to show you how powerful R can be:
+
+![image](https://github.com/openjusticeok/spi-2023/assets/56839927/40b0e3ce-3686-4b01-aad5-2a6e6736a7e5)
+
+> **Faceting:** We can break our graphs down even further, breaking it out into multiple graphs using other variables, like race and gender for example.
+
+![image](https://github.com/openjusticeok/spi-2023/assets/56839927/037ffcaa-da56-4b49-845a-ec4411bfa051)
+
+> **Interactivity:** There are awesome libraries that can turn your static graphs into interactive ones! You can customize them and put them on a website, a Shiny app, etc.
+
+![image](https://github.com/openjusticeok/spi-2023/assets/56839927/096ed864-54cb-49da-b267-6d0313a78f80)
+
+> **Geospatial Maps:** There are very powerful tools for map-making and geographical analysis in R. I used the `{tigris}` package to download shape files and map tiles, all without having to leave RStudio.
 
 ---
 # SPI Session 2: Tulsa (July 20-21, 2023)
