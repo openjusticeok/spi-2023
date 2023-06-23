@@ -38,13 +38,7 @@ After some searching, there seem to be a few datasets that fit what we're lookin
 
 Sometimes you can't find anything just searching around. In those scenarios, you might have to look for alternatives:
 - Sometimes you can just reach out to the people who should have the data (government agencies in particular). I recently did this with the Oklahoma State Bureau of Investigation, and they very helpfully gave me a nice spreadsheet of exactly what I was looking for.
-- Sometimes you can't find a nice dataset to download, but you can find an API (Application Programming Interface) or database to query. This is a little more technologically involved, however. The easiest way to do this, generally, is to find an R or Python package (like [{tidycensus}](https://cran.r-project.org/web/packages/tidycensus/index.html) for US Census data, for example) that lets you access the data using simplififed R commands.
-
-A collection of other helpful data sources for public policy research:
-- [Federal Election Commission -- federal campaign finance contributions](https://www.fec.gov/data/elections/president/2024/)
-- [The Oklahoma Ethics Commission's "Guardian System" -- state level campaign finance contributions](https://guardian.ok.gov/PublicSite/HomePage.aspx)
-- [US Census -- tons of data on who lives where and what their lives are like, with a great search interface](https://data.census.gov/)
-- 
+- Sometimes you can't find a nice dataset to download, but you can find an API (Application Programming Interface) or database to query. This is a little more technologically involved, however.
 
 ## 2. Examining our Data: The Wonderful World of R
 
@@ -483,10 +477,35 @@ I've included code in our script (`R/okc-traffic-analysis.R`) that shows how to 
 
 ![image](https://github.com/openjusticeok/spi-2023/assets/56839927/096ed864-54cb-49da-b267-6d0313a78f80)
 
-**Interactive Dashboards:** This dashbaord is one we made for the Oklahoma Criminal Justice Advisory Council. You can see the live version [here](https://cjac-dashboard-isk53p4yuq-uc.a.run.app/).
+**Interactive Dashboards:** This is a {shiny} dashbaord we made for the Oklahoma Criminal Justice Advisory Council. You can see the live version [here](https://cjac-dashboard-isk53p4yuq-uc.a.run.app/).
 
 ![image](https://github.com/openjusticeok/spi-2023/assets/56839927/04862e29-df29-46b1-b850-73186b653b08)
 
+# Resources:
+
+## Finding data
+
+**Handy sources of public policy data:**
+- [Federal Election Commission -- federal campaign finance contributions](https://www.fec.gov/data/elections/president/2024/)
+- [The Oklahoma Ethics Commission's "Guardian System" -- state level campaign finance contributions](https://guardian.ok.gov/PublicSite/HomePage.aspx)
+- [US Census -- tons of data on who lives where and what their lives are like, with a great search interface](https://data.census.gov/)
+  - Also available via the {tidycensus}](https://cran.r-project.org/web/packages/tidycensus/index.html) package for R
+- [The {tigris} package -- hapefiles for mapping various US jurisdictions](https://cran.r-project.org/web/packages/tigris/readme/README.html)
+
+**Other fun data sources**
+- [The "Sports Dataverse", a family of R packages for finding and analyzing sports data from football, basketball, hockey, chess, and others](https://www.sportsdataverse.org/)
+- [The American National Election Studies, a widely-used academic source of data on Americans' political attitudes and behaviors, going back decades](https://electionstudies.org/data-center/)
+
+## Learning / using R
+
+**R Books:**
+- ["R for Data Science", the industry-standard guide to R. It can teach you how to do everything in this presentation and much more](https://r4ds.had.co.nz/) (available for free online)
+- [The R Graphics Cookbook](http://www.cookbook-r.com/) (available for free online)
+- [The Posit Library, a collection of books covering everything from generating websites with {bookdown} to finance analysis with {shiny}. Includes both of the above](https://www.rstudio.com/resources/books/) (all available for free online)
+
+**R Tutorials:**
+- [{swirl}, an R package designed to teach R interactively](https://swirlstats.com/) (free)
+- [Datacamp](https://www.datacamp.com/courses/free-introduction-to-r) and [Code Academy](https://www.codecademy.com/learn/learn-r) are two popular online R courses (they cost money, however)
 
 ---
 # SPI Session 2: Tulsa (July 20-21, 2023)
