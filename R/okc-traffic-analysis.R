@@ -43,7 +43,7 @@ okc_data |>
 # We can combine the `group_by()`` and `summarize()` functions using pipes to get 
 # a better idea of what the variables relevant to our RQ look like. 
 okc_data |>
-  group_by(year = year(date)) |>
+  group_by(year(date)) |>
   summarize(
     n_citations = n(),
     percent_missing_color = sum(100 * is.na(vehicle_color)) / n_citations,
@@ -143,6 +143,11 @@ okc_data_clean <- okc_data_clean |>
     )
   )
 
+# The ones with multiple colors listed -- gonna file them as "Unknown / Other"
+okc_data_clean |> 
+  filter(grepl("\\|", vehicle_color)) |>
+  select(vehicle_color)
+
 # That column looks a lot better now!
 okc_data_clean |> 
   count(vehicle_color_clean) |> 
@@ -208,7 +213,7 @@ okc_data_clean <- okc_data_clean |>
   )
     
 # These columns also looks a lot better now!
-okc_data_clean |> 
+okc_data_clean |>
   count(vehicle_make_clean) |> 
   arrange(desc(n)) |>
   print(n = 20)
@@ -218,7 +223,7 @@ okc_data_clean |>
   arrange(desc(n)) |>
   print(n = 20)
 
-# What would it look like to clean other parts of this data? 
+# What would it look like to clean other parts of this data?
 summary(okc_data_clean$speed)
 summary(okc_data_clean$subject_age)
 
@@ -257,7 +262,7 @@ chart_make <- okc_data_clean |>
 
 chart_make
 
-# Vehicle color ----------------------------------------------------------
+# Vehicle color ----------------------------------------------------------------
 # We can add custom scales and colors:
 color_scale <- c("White" = "white", "Black" = "black",
                  "Silver" = "azure2", "Red" = "red",
@@ -307,6 +312,33 @@ okc_data_clean |>
   scale_color_viridis_d("Vehicle Type") +
   ggthemes::theme_gdocs()
 
+# Answering our research question ==============================================
+
+# Looking at only data with complete make, model, color info:
+okc_data_clean |>
+  filter(!is.na(vehicle_model), !is.na(vehicle_make), !is.na(vehicle_color)) |>
+  mutate(
+    vehicle_color_make_model = paste(vehicle_color_clean, vehicle_make_clean, vehicle_model_clean)
+  ) |>
+  count(vehicle_color_make_model, sort = TRUE) |>
+  print(n = 10)
+
+# Looking without model:
+okc_data_clean |>
+  mutate(
+    vehicle_color_make_model = paste(vehicle_color_clean, vehicle_make_clean)
+  ) |>
+  count(vehicle_color_make_model, sort = TRUE) |>
+  print(n = 10)
+
+# The answer: it depends on how you look at it! But maybe keep an eye on black / white pickup trucks from Chevy / Ford
+
+# Where can we go from here?
+# - This doesn't tell us much about the behavior of each car types' drivers. Can we make these numbers per capita?
+# - Can we apply this same code / approach to a national dataset?
+# - Can we look closer at geography? Maybe its relation to race, vehicle type, etc.?
+
+
 # Other cool charts you can make -----------------------------------------------
 
 # Facets make it easy to break out graphs with extra variables  ----
@@ -333,7 +365,7 @@ okc_data_clean |>
 # Interactive graphs ----
 library(plotly)
 
-ggplotly(chart_make)
+ggplotly(chart_make, tooltip = "y")
 
 # Maps ----
 library(sf)
@@ -380,31 +412,5 @@ ggplot(okc_shape) +
   scale_alpha_manual(values = c(0, rep(0.5, 13))) +
   guides(alpha = "none") +
   ggthemes::theme_map()
-
-# Answering our research question ==============================================
-
-# Looking at all data:
-okc_data_clean |>
-  mutate(
-    vehicle_color_make_model = paste(vehicle_color_clean, vehicle_make_clean, vehicle_model_clean)
-  ) |>
-  count(vehicle_color_make_model, sort = TRUE) |>
-  print(n = 10)
-
-# Looking at only data with complete make, model, color info:
-okc_data_clean |>
-  filter(!is.na(vehicle_model), !is.na(vehicle_make), !is.na(vehicle_color)) |>
-  mutate(
-    vehicle_color_make_model = paste(vehicle_color_clean, vehicle_make_clean, vehicle_model_clean)
-  ) |>
-  count(vehicle_color_make_model, sort = TRUE) |>
-  print(n = 20)
-
-# The answer: it depends on how you look at it! But maybe keep an eye on black / white pickup trucks from Chevy / Ford
-
-# Where can we go from here?
-# - This doesn't tell us much about the behavior of each car types' drivers. Can we make these numbers per capita?
-# - Can we apply this same code / approach to a national dataset?
-# - Can we look closer at geography? Maybe its relation to race, vehicle type, etc.?
 
 
