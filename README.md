@@ -492,7 +492,7 @@ I've included code in our script (`R/okc-traffic-analysis.R`) that shows how to 
   - Also available via the {tidycensus}](https://cran.r-project.org/web/packages/tidycensus/index.html) package for R
 - [The {tigris} package -- hapefiles for mapping various US jurisdictions](https://cran.r-project.org/web/packages/tigris/readme/README.html)
 
-**Other fun data sources**
+**Other fun data sources:**
 - [The "Sports Dataverse", a family of R packages for finding and analyzing sports data from football, basketball, hockey, chess, and others](https://www.sportsdataverse.org/)
 - [The American National Election Studies, a widely-used academic source of data on Americans' political attitudes and behaviors, going back decades](https://electionstudies.org/data-center/)
 
