@@ -5,7 +5,7 @@
 ---
 # SPI Session 2: Tulsa (July 20-21, 2023)
 
-> A
+> Details TBA!
 
 ---
 
@@ -20,9 +20,11 @@
   - Also available via the [{tidycensus}](https://cran.r-project.org/web/packages/tidycensus/index.html) package for R
 - [The {tigris} package](https://cran.r-project.org/web/packages/tigris/readme/README.html) -- shapefiles for mapping various US jurisdictions
 
-**Other fun data sources:**
+**Other fun / useful data sources:**
 - [The "Sports Dataverse"](https://www.sportsdataverse.org/) -- a family of R packages for finding and analyzing sports data from football, basketball, hockey, chess, and others
 - [The American National Election Studies](https://electionstudies.org/data-center/) -- a widely-used academic source of data on Americans' political attitudes and behaviors, going back decades
+- [The {rtweet} package](https://github.com/ropensci/rtweet) -- an R package for downloading data from Twitter (WARNING: recent and ongoing changes to Twitter's API have disrupted some of this package's functions)
+- [The {rvest} package](https://rvest.tidyverse.org/) -- an R package for scraping data from websites
 
 ## Learning / using R
 
@@ -30,6 +32,7 @@
 - ["R for Data Science"](https://r4ds.had.co.nz/) -- the industry-standard guide to R. It can teach you how to do everything in this repo and much more (available for free online)
 - [The R Graphics Cookbook](http://www.cookbook-r.com/) -- a detailed guide to styling R plots and other graphics (available for free online)
 - [The Posit Library](https://www.rstudio.com/resources/books/) -- a collection of books covering everything from generating websites with {bookdown} to finance analysis with {shiny}. Includes both of the above (all available for free online)
+- [The Big Book of R](https://www.bigbookofr.com/) -- a curated and massive list of free R books and tutorials, curated by data scientist Oscar Baruffa.
 
 **R Tutorials:**
 - [{swirl}](https://swirlstats.com/) -- an R package designed to teach R interactively (free)
