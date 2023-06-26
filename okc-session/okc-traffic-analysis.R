@@ -64,7 +64,7 @@ okc_data |>
   ) |>
   # ...then count() to see which is most common in the data
   count(vehicle_color_make_model, sort = TRUE) |>
-  print(n = 30)
+  print(n = 10)
 
 # This is a decent start, but the messiness in the data is making it hard to tell.
 
@@ -74,17 +74,17 @@ okc_data |>
 okc_data |> 
   count(vehicle_color) |> 
   arrange(desc(n)) |>
-  print(n = 20)
+  print(n = 10)
 
 okc_data |> 
   count(vehicle_make) |> 
   arrange(desc(n)) |>
-  print(n = 20)
+  print(n = 10)
 
 okc_data |>
   count(vehicle_model) |> 
   arrange(desc(n)) |>
-  print(n = 20)
+  print(n = 10)
 
 # Now we have an idea of what we need to clean up.
 
@@ -224,8 +224,20 @@ okc_data_clean |>
   print(n = 20)
 
 # What would it look like to clean other parts of this data?
-summary(okc_data_clean$speed)
-summary(okc_data_clean$subject_age)
+okc_data_clean |>
+  mutate(
+    # We could calculate new variablesfrom values in other columns
+    speed_diff = speed - posted_speed,
+    # We could classify into age groups
+    minor = if_else(subject_age < 18, TRUE, FALSE),
+    age_group = case_when(
+      subject_age < 18 ~ "< 18",
+      subject_age >= 18 & subject_age < 25 ~ "18 to 25",
+      subject_age >= 25 & subject_age < 35 ~ "25 to 35",
+      # etc.
+    )
+    # Could use geography? Other demographics? Charges involved?
+  )
 
 
 # Analyzing the cleaned data ===================================================
@@ -309,7 +321,7 @@ okc_data_clean |>
        x = "Year of Citation",
        y = "Total Citations Issued") +
   scale_y_continuous(labels = scales::comma) +
-  scale_color_viridis_d("Vehicle Type") +
+  scale_color_viridis_d("Vehicle Type", option = "turbo") +
   ggthemes::theme_gdocs()
 
 # Answering our research question ==============================================
@@ -344,10 +356,10 @@ okc_data_clean |>
 # Facets make it easy to break out graphs with extra variables  ----
 # We can swap `subject_sex` with `subject_race` here and get the same graph 
 okc_data_clean |>
-  filter(!is.na(subject_sex)) |>
-  group_by(vehicle_color_clean, subject_sex) |>
+  filter(!is.na(subject_race)) |>
+  group_by(vehicle_color_clean, subject_race) |>
   summarize(n = n()) |>
-  ggplot(aes(x = tidytext::reorder_within(vehicle_color_clean, n, subject_sex),
+  ggplot(aes(x = tidytext::reorder_within(vehicle_color_clean, n, subject_race),
              y = n,
              fill = vehicle_color_clean)) +
   geom_col(color = "black") +
@@ -359,7 +371,7 @@ okc_data_clean |>
   scale_y_continuous(labels = scales::comma) +
   tidytext::scale_x_reordered() +
   guides(fill = "none") +
-  facet_wrap(~subject_sex, scales = "free") +
+  facet_wrap(~subject_race, scales = "free") +
   ggthemes::theme_fivethirtyeight()
 
 # Interactive graphs ----
