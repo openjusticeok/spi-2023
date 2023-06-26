@@ -356,10 +356,10 @@ okc_data_clean |>
 # Facets make it easy to break out graphs with extra variables  ----
 # We can swap `subject_sex` with `subject_race` here and get the same graph 
 okc_data_clean |>
-  filter(!is.na(subject_race)) |>
-  group_by(vehicle_color_clean, subject_race) |>
+  filter(!is.na(subject_sex)) |>
+  group_by(vehicle_color_clean, subject_sex) |>
   summarize(n = n()) |>
-  ggplot(aes(x = tidytext::reorder_within(vehicle_color_clean, n, subject_race),
+  ggplot(aes(x = tidytext::reorder_within(vehicle_color_clean, n, subject_sex),
              y = n,
              fill = vehicle_color_clean)) +
   geom_col(color = "black") +
@@ -371,7 +371,7 @@ okc_data_clean |>
   scale_y_continuous(labels = scales::comma) +
   tidytext::scale_x_reordered() +
   guides(fill = "none") +
-  facet_wrap(~subject_race, scales = "free") +
+  facet_wrap(~subject_sex, scales = "free") +
   ggthemes::theme_fivethirtyeight()
 
 # Interactive graphs ----
