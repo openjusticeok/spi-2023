@@ -4,15 +4,15 @@
 
 1) Where do you get data from?
 2) How and why do you get data into R / RStudio?
-3) How and why do you "clean" data with R?
-4) How do you analyze / graph data with R?
+3) How and why do you "clean" data?
+4) How do you analyze / graph data?
 5) What other cools stuff is possible with R?
 
 **Note:** We're going to be covering quite a bit of ground, so I want to emphasize that the goal here is not for you to memorize / understand each and every thing I'm doing here. Our goal is for you to learn:
-- Why R is useful
-- How to install R and RStudio
-- The basics of loading and exploring data in R
-- A general sense of what's possible with R
+- Why R is useful,
+- How to install R and RStudio,
+- The basics of loading and exploring data in R, and
+- A general sense of what's possible with R.
 
 In other words, don't feel like you're missing something or falling behind if some of this is confusing! If you decide R is something you want to dive into deeper, you can use the free books and resources linked in this GitHub repo to get up and running yourself.
 
@@ -24,7 +24,12 @@ To answer this, we'll need to find some good quality data on traffic citation is
 
 ## 1. Finding Data Sources
 
-We're going to start from absolutely nothing and simply fire up our favorite search engine. We'll vary our search terms (e.g. "traffic citation" vs. "traffic stop") and include some modifiers like "dataset", "GitHub", etc. and see what we can come up with. We'll steer clear of ad-ridden, low-quality, "anyone can upload" sites like Kaggle, Data.World, etc.
+### Method 1: Hitting the search engines
+
+We're going to start from absolutely nothing and simply fire up our favorite search engine. Some tips for finding data out on the worldwide information superhighway:
+- Vary your search terms (e.g. "traffic citation" vs. "traffic stop"). It helps to figure out the terminology used by academics, politicians, etc. and get a sense of what vocabulary to use.
+- Include some modifiers like "data" / "dataset", "GitHub", etc. ".gov" and ".edu" are helpful as well.
+- Steer clear of ad-ridden, low-quality, "anyone can upload" sites like Kaggle, Data.World, etc. These are almost never helpful.
 
 After some searching, there seem to be a few datasets that fit what we're looking for:
 
@@ -34,9 +39,13 @@ After some searching, there seem to be a few datasets that fit what we're lookin
   - Vermont state government publishes their stats [here](https://vsp.vermont.gov/communityaffairs/trafficstops)
   - St. Paul Minnesota publishes theirs [here](https://information.stpaul.gov/datasets/stpaul::traffic-stops/explore)
 
-Sometimes you can't find anything just searching around. In those scenarios, you might have to look for alternatives:
-- Sometimes you can just reach out to the people who should have the data (government agencies in particular). I recently did this with the Oklahoma State Bureau of Investigation, and they very helpfully gave me a nice spreadsheet of exactly what I was looking for.
-- Sometimes you can't find a nice dataset to download, but you can find an API (Application Programming Interface) or database to query. This is a little more technologically involved, however.
+### Method 2: Asking someone else
+
+If the internet fails you, sometimes you can just reach out to the people who should have the data (government agencies in particular). I recently did this with the Oklahoma State Bureau of Investigation, and they very helpfully gave me a nice spreadsheet of exactly what I was looking for. We at Open Justice are also good people to email if you're looking for something Oklahoma-specific.
+
+### Method 3: R wizardry
+
+Sometimes you can't find a nice dataset to download, but you can find an API (Application Programming Interface) or database to query. This is a little more technologically involved, however.
 
 ## 2. Examining our Data: The Wonderful World of R
 
