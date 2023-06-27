@@ -114,7 +114,7 @@ library(lubridate)
 library(ggplot2)
 ```
 
-> Understand the basics of packages and the environment ✅
+> Understand the basics of packages, functions, and the environment ✅
 
 Now it's finally time to load up the data. We'll be using either `read_csv()` or `read_rds()`, both of which are functions from the `{readr}` package we loaded in a second ago. We'll also be saving our data in our environment, just like we saved `x <- 5` earlier. Let's call our dataset "okc_data" by adding this to our script:
 
