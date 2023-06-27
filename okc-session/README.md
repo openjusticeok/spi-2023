@@ -39,13 +39,17 @@ After some searching, there seem to be a few datasets that fit what we're lookin
   - Vermont state government publishes their stats [here](https://vsp.vermont.gov/communityaffairs/trafficstops)
   - St. Paul Minnesota publishes theirs [here](https://information.stpaul.gov/datasets/stpaul::traffic-stops/explore)
 
+A list of common, go-to sources for public policy data can be found in the "Resources" list at the [root of this GitHub repo.](https://github.com/openjusticeok/spi-2023/tree/main)
+
 ### Method 2: Asking someone else
 
-If the internet fails you, sometimes you can just reach out to the people who should have the data (government agencies in particular). I recently did this with the Oklahoma State Bureau of Investigation, and they very helpfully gave me a nice spreadsheet of exactly what I was looking for. We at Open Justice are also good people to email if you're looking for something Oklahoma-specific.
+If the internet fails you, sometimes you can just reach out to the people who should have the data (government agencies in particular). I recently did this with the Oklahoma State Bureau of Investigation, and they very helpfully gave me a nice spreadsheet of exactly what I was looking for. We at Open Justice are also good people to email if you're looking for something Oklahoma-specific!
 
 ### Method 3: R wizardry
 
-Sometimes you can't find a nice dataset to download, but you can find an API (Application Programming Interface) or database to query. This is a little more technologically involved, however.
+Sometimes you can't find a nice dataset to download, but you can find an API (Application Programming Interface) or database to query. This is a little more technologically involved, however; we'll get into it a bit more at the end.
+
+> Understand the basics of finding data online ✅
 
 ## 2. Examining our Data: The Wonderful World of R
 
@@ -67,6 +71,8 @@ Here's a quick tour:
 - At the top, you'll see various menus like "File", "Edit", "Code", "View", etc. You can use these menus to personalize your setup, among other things -- for instance, try clicking "Tools" > "Global Options" > "Appearance" and changing the theme.
 
 Now that we've got our tools installed and set up, it's time to import our data!
+
+> Understand the basics of RStudio ✅
 
 ### Opening our data in RStudio
 
@@ -487,3 +493,8 @@ I've included code in our script (`R/okc-traffic-analysis.R`) that shows how to 
 **Interactive Dashboards:** This is a {shiny} dashbaord we made for the Oklahoma Criminal Justice Advisory Council. You can see the live version [here](https://cjac-dashboard-isk53p4yuq-uc.a.run.app/).
 
 ![image](https://github.com/openjusticeok/spi-2023/assets/56839927/04862e29-df29-46b1-b850-73186b653b08)
+
+**Using Packages to Find and Import Data:** This is an example of how packages can be used to load up data without even having to leave RStudio. It's our internal `{ojodb}` package, which darwas data from our OJO database. Tons of similar ones exist for Census data, data about Congress, data about the economy, etc.
+
+![image](https://github.com/openjusticeok/spi-2023/assets/56839927/ae4eba63-4ec6-4b3c-9f98-ede00ac4e30a)
+
