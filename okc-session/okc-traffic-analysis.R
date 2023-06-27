@@ -289,7 +289,7 @@ color_scale <- c("White" = "white", "Black" = "black",
 okc_data_clean |>
   group_by(vehicle_color_clean) |>
   summarize(n = n()) |>
-  ggplot(aes(x = reorder(vehicle_color_clean, n), # Reorders our columns by `n`
+  ggplot(aes(x = reorder(vehicle_color_clean, n), # ReoI had some kind of weird font error at one rders our columns by `n`
              y = n,
              fill = vehicle_color_clean)) +
   geom_col(color = "black") +
