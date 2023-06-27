@@ -66,7 +66,7 @@ We'll start by making sure the R language is installed on our computers. We'll a
 Here's a quick tour:
 
 - On the left, you'll see the R console. You can type R code into it and press enter to execute it. For example, you could try typing in `235 * 293`, and it'll return the answer like a calculator. You could also type something like `235 * 293 > 10`, which would return `TRUE`, since the answer is indeed greater than 10.
-- In the upper right portion of RStudio, you'll see your current R environment (among other things, which aren't as important right now). If we stored a value as a variable in our R console (for example, by typing `x <- 5` or `x = 5` and hitting enter), it'll show up here. It's also where we'll find information on the data we're about to load up, after we've done so.
+- In the upper right portion of RStudio, you'll see your current R environment (among other things, which aren't as important right now). It's like our work bench -- if we stored a value as a variable in our R console (for example, by typing `x <- 5` or `x = 5` and hitting enter), it'll show up here for us to use. It's also where we'll find information on the data we're about to load up, after we've done so.
 - In the bottom right portion, you'll see a few different tabs like "Files", "Plots", etc. You can use it for all sorts of things, but it's not particularly important right now.
 - At the top, you'll see various menus like "File", "Edit", "Code", "View", etc. You can use these menus to personalize your setup, among other things -- for instance, try clicking "Tools" > "Global Options" > "Appearance" and changing the theme.
 
@@ -105,7 +105,7 @@ In your R console, try typing the following:
 
 You can type them straight into the console and press enter, or you can type them into your script and run the code yourself (using Ctrl+Enter, for example). R will do all the work, so just sit back and watch the paragraphs fly by. Also, all of these packages are a part of the [Tidyverse](https://www.tidyverse.org/), a series of packages that all work together to make data analysis in R easier and more accessible. If we want, we can install all of them (plus a few extras) in one go by typing `install.packages("tidyverse")`.
 
-Once they're installed, we have to tell our script that we're going to use them. At the very top of our script, before anything else, we'll do so using the `library()` function. Type the following into your freshly made R Script (**not the console!**), save it, and then run the code:
+Once they're installed, we have to tell our script that we're going to use them -- in other words, we have to put our tools on the work bench. At the very top of our script, before anything else, we'll do so using the `library()` function. Type the following into your freshly made R Script (**not the console!**), save it, and then run the code:
 
 ```
 library(dplyr)
@@ -113,6 +113,8 @@ library(readr)
 library(lubridate)
 library(ggplot2)
 ```
+
+> Understand the basics of packages and the environment ✅
 
 Now it's finally time to load up the data. We'll be using either `read_csv()` or `read_rds()`, both of which are functions from the `{readr}` package we loaded in a second ago. We'll also be saving our data in our environment, just like we saved `x <- 5` earlier. Let's call our dataset "okc_data" by adding this to our script:
 
@@ -123,6 +125,8 @@ okc_data <- read_rds("~/Downloads/stanford-citation-data-okc.rds")
 If we run our script now, it'll load up all the needed libraries, then read in our data and save it as `okc_data`. You can see in the environment pane of RStudio that all 945,107 rows of our data have been succesfully loaded in R. You can also click the little arrow next to it to see more information about the columns / variables inside. Let's pause and just explore the data in RStudio for a bit.
 
 ![image](https://github.com/openjusticeok/spi-2023/assets/56839927/4655efc8-efd3-49b6-aadc-0f8abaad49a6)
+
+> Understand how to load data into R ✅
 
 ## 2.5 Data Analysis in RStudio -- exploring your data
 
@@ -198,6 +202,8 @@ okc_data |>
 ```
 
 Unfortunately, like most data in the world of public policy, what remains is still very messy -- too messy to answer our research question without more work. Thus, the next step will be cleaning up the relevant columns. In this case, we'll need to pay special attention to the `vehicle_make`, `vehicle_model`, and `vehicle_color` columns.
+
+> Understand the basics of how to explore data in R ✅
 
 ## 3. Data Analysis in RStudio -- cleaning your data
 
@@ -342,6 +348,8 @@ In addition to filtering the data and adding the `year` variable, all we've real
 
 At this point, the relevant columns are cleaned up, and we have a good sense of what data are missing. I think we're finally ready to start answering our research question! Because tables are no fun and I'm sick of looking at them, let's do it by making some graphs instead. We'll use our good friend the `{ggplot2}` package to do so.
 
+> Understand why we often have to "clean" messy data, get the basic concepts of how to do it ✅
+
 ## 4. Data Analysis in RStudio -- analyzing and graphing your data
 
 We'll start with a chart to answer the "vehicle make" part of our research question. We can turn our data into a nice graph with just a few commands:
@@ -439,7 +447,9 @@ okc_data_clean |>
 
 ![image](https://github.com/openjusticeok/spi-2023/assets/56839927/f89455f2-6c97-491e-88fe-5ba52744e397)
 
-> Note the missing data in the latter months! We'd probably want to cut it off a bit earlier.
+Note the missing data in the latter months! We'd probably want to cut it off a bit earlier.
+
+> Understand how R can be used for visualizations as well as analysis ✅
 
 ### Answering our Research Question
 
@@ -473,6 +483,8 @@ We've only just scraped the surface of this data. What else could we do with it?
 - Can we look closer at geography? Maybe its relation to race, vehicle type, etc.?
 
 If I did my job well, you now have a basic understanding of what R can do for you. I'm also hoping the resources linked in this GitHub repo will enable you to go off and tinker with R on your own -- remember, you can use and learn all of the stuff I've showed off (and much more!) for **free!** You don't have to buy or subscribe to R or RStudio, since they're free and open source, and there's a huge community of helpful and very smart people whose shoulders you can stand on. If you are interested in using data in any way in your public policy work, I can't recommend it enough!
+
+> Ready to go off and get started learning how to do cool stuff with R ✅
 
 ## 5. What else can we do with R?
 
