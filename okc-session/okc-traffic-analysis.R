@@ -360,7 +360,7 @@ library(tigris)
 options(tigris_use_cache = TRUE)
 
 okc_shape <- zctas(state = "Oklahoma", year = 2010)
-uas <- urban_areas(cb = TRUE)
+uas <- urban_areas()
 okc_ua <- uas[grep("Oklahoma City", uas$NAME10), ]
 okc_shape <- okc_shape[okc_ua, ]
 okc_shape <- okc_shape |>
