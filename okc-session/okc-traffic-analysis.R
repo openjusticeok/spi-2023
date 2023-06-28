@@ -143,11 +143,6 @@ okc_data_clean <- okc_data_clean |>
     )
   )
 
-# The ones with multiple colors listed -- gonna file them as "Unknown / Other"
-okc_data_clean |> 
-  filter(grepl("\\|", vehicle_color)) |>
-  select(vehicle_color)
-
 # That column looks a lot better now!
 okc_data_clean |> 
   count(vehicle_color_clean) |> 
@@ -155,37 +150,21 @@ okc_data_clean |>
   print(n = 20)
 
 # Let's clean up the `vehicle_make` and `vehicle_model` columns next.
-# This time we'll just modify our existing dataset, so we can keep our new columns / avoid having to re-filter
+# This is how you'd use a data dictionary if you did have one:
+make_dictionary <- read_csv("~/Downloads/vehicle_make_data_dictionary.csv")
+
 okc_data_clean <- okc_data_clean |> 
+  left_join(make_dictionary, by = "vehicle_make")
+
+# One function is all it takes!
+okc_data_clean |>
+  count(vehicle_make_clean) |> 
+  arrange(desc(n)) |>
+  print(n = 20)
+
+# Finally, let's clean up the model column. We can get a little more complex here:
+okc_data_clean <- okc_data_clean |>
   mutate(
-    vehicle_make_clean = case_when(
-      vehicle_make == "CHEV" ~ "Chevy", # Same basic idea as before. We'll cover the top 25 or so most common ones.
-      vehicle_make == "FORD" ~ "Ford",
-      vehicle_make == "HOND" ~ "Honda",
-      vehicle_make == "DODG" ~ "Dodge",
-      vehicle_make == "NISS" ~ "Nissan",
-      vehicle_make %in% c("TOYO", "TOYT") ~ "Toyota",
-      vehicle_make == "GMC" ~ "GMC",
-      vehicle_make == "HYUN" ~ "Hyundai",
-      vehicle_make == "JEEP" ~ "Jeep",
-      vehicle_make == "PONT" ~ "Pontiac",
-      vehicle_make == "CHRY" ~ "Chrysler",
-      vehicle_make == "KIA" ~ "Kia",
-      vehicle_make == "CADI" ~ "Cadillac",
-      vehicle_make == "MAZD" ~ "Mazda",
-      vehicle_make == "BUIC" ~ "Buick",
-      vehicle_make == "BMW" ~ "BMW",
-      vehicle_make %in% c("LEXU", "LEXS") ~ "Lexus",
-      vehicle_make == "VOLV" ~ "Volvo",
-      vehicle_make %in% c("MERC", "MERB") ~ "Mercedes",
-      vehicle_make == "MITS" ~ "Mitsubishi",
-      vehicle_make == "VOLK" ~ "Volkswagen",
-      vehicle_make == "LINC" ~ "Lincoln",
-      vehicle_make == "INFI" ~ "Infiniti",
-      vehicle_make == "ACUR" ~ "Acura",
-      # TRUE ~ vehicle_make
-      TRUE ~ "Unknown / Other"
-    ),
     # For the vehicle model, I'm going to clean it up into broader groups like "Pickup", "Sedan", etc.
     # If we want to look at specific models later, we can just use the original variable
     vehicle_model_clean = case_when(
@@ -212,12 +191,7 @@ okc_data_clean <- okc_data_clean |>
     )
   )
     
-# These columns also looks a lot better now!
-okc_data_clean |>
-  count(vehicle_make_clean) |> 
-  arrange(desc(n)) |>
-  print(n = 20)
-
+# This column also looks a lot better now!
 okc_data_clean |> 
   count(vehicle_model_clean) |> 
   arrange(desc(n)) |>
