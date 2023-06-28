@@ -93,7 +93,7 @@ Save your script wherever you'd like, and then we'll add our first lines of R co
 
 **Important Concept: Functions**
 
-You can install each of them using the R function `install.packages()`. All R functions use this `word()` format -- the word at the beginning tells R which function we're using, and the parentheses are where we'll put the "arguments" we're supplying to the function. In this case, the only argument we need to provide is to tell it which package we want to install.
+Installing new packages allows you to use new *functions* that aren't available in base R. Functions are pre-written chunks of code that accomplish tasks -- for example, the base R `mean()` function calculates the mean of a list of numbers. You can install new ones using the base R function `install.packages()`. All R functions use this `word()` format -- the word at the beginning tells R which function we're using, and the parentheses are where we'll put the "arguments" we're supplying to the function. In this case, the only argument we need to provide is to tell it which package we want to install.
 
 In your R console, try typing the following:
 
@@ -105,9 +105,9 @@ In your R console, try typing the following:
 
 `install.packages("ggplot2")`
 
-You can type them straight into the console and press enter, or you can type them into your script and run the code yourself (using Ctrl+Enter, for example). R will do all the work, so just sit back and watch the paragraphs fly by. Also, all of these packages are a part of the [Tidyverse](https://www.tidyverse.org/), a series of packages that all work together to make data analysis in R easier and more accessible. If we want, we can install all of them (plus a few extras) in one go by typing `install.packages("tidyverse")`.
+You can type them straight into the console and press enter, or you can type them into your script and run the code yourself (using Ctrl+Enter, for example). R will do all the work, so just sit back and watch the installation text fly by. Also, all of these packages are a part of the [Tidyverse](https://www.tidyverse.org/), a series of packages that all work together to make data analysis in R easier and more accessible. If we want, we can install all of them (plus a few extras) in one go by typing `install.packages("tidyverse")`.
 
-Once they're installed, we have to tell our script that we're going to use them -- in other words, we have to put our tools on the work bench. At the very top of our script, before anything else, we'll do so using the `library()` function. Type the following into your freshly made R Script (**not the console!**), save it, and then run the code:
+Once they're installed, we have to tell our script that we're going to use them -- in other words, we have to put our tools on the work bench. At the very top of our script, before anything else, we'll do so using the `library()` function. Type the following into your freshly made R Script (**not the console!**), and then run the code:
 
 ```
 library(dplyr)
