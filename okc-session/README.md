@@ -230,7 +230,7 @@ okc_data_clean <- okc_data |>
   )
 
 # Next, we'll clean up the `color` column. ----------
-# Ideally we'd use a data dictionar to do this, but since we don't have one, we'll have to use our best guess.
+# Ideally we'd use a data dictionary to do this, but since we don't have one, we'll have to use our best guess.
 okc_data_clean <- okc_data_clean |> 
   mutate(
     # `case_when()` lets us classify each possible value:
