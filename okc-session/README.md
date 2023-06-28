@@ -93,7 +93,7 @@ Save your script wherever you'd like, and then we'll add our first lines of R co
 
 **Important Concept: Functions**
 
-You can install each of them using the R function `install.packages()`. All R functions use this `word()` format -- the word at the beginning tells R which function we're using, and the parentheses are where we'll put the "arguments" we're supplying to the function. In this case, the only argument we need to provide is to tell it which package we want to install.
+Installing new packages allows you to use new *functions* that aren't available in base R. Functions are pre-written chunks of code that accomplish tasks -- for example, the base R `mean()` function calculates the mean of a list of numbers. You can install new ones using the base R function `install.packages()`. All R functions use this `word()` format -- the word at the beginning tells R which function we're using, and the parentheses are where we'll put the "arguments" we're supplying to the function. In this case, the only argument we need to provide is to tell it which package we want to install.
 
 In your R console, try typing the following:
 
@@ -105,9 +105,9 @@ In your R console, try typing the following:
 
 `install.packages("ggplot2")`
 
-You can type them straight into the console and press enter, or you can type them into your script and run the code yourself (using Ctrl+Enter, for example). R will do all the work, so just sit back and watch the paragraphs fly by. Also, all of these packages are a part of the [Tidyverse](https://www.tidyverse.org/), a series of packages that all work together to make data analysis in R easier and more accessible. If we want, we can install all of them (plus a few extras) in one go by typing `install.packages("tidyverse")`.
+You can type them straight into the console and press enter, or you can type them into your script and run the code yourself (using Ctrl+Enter, for example). R will do all the work, so just sit back and watch the installation text fly by. Also, all of these packages are a part of the [Tidyverse](https://www.tidyverse.org/), a series of packages that all work together to make data analysis in R easier and more accessible. If we want, we can install all of them (plus a few extras) in one go by typing `install.packages("tidyverse")`.
 
-Once they're installed, we have to tell our script that we're going to use them -- in other words, we have to put our tools on the work bench. At the very top of our script, before anything else, we'll do so using the `library()` function. Type the following into your freshly made R Script (**not the console!**), save it, and then run the code:
+Once they're installed, we have to tell our script that we're going to use them -- in other words, we have to put our tools on the work bench. At the very top of our script, before anything else, we'll do so using the `library()` function. Type the following into your freshly made R Script (**not the console!**), and then run the code:
 
 ```
 library(dplyr)
@@ -212,13 +212,14 @@ Unfortunately, like most data in the world of public policy, what remains is sti
 ## 3. Data Analysis in RStudio -- cleaning your data
 
 Our data cleaning tasks:
-- Filter out the data we're not interested in -- in this case, we don't need data from 2018 onward, and we don't need the rows corresponding to pedestrian citations (where `type` is `"pedestrian"`).
+- Filter out the data we're not interested in -- in this case, we don't need data from 2018 onward, and we don't need the rows corresponding to pedestrian citations (where `type` is `"pedestrian"`),
+- Add a `year` variable for us to use in our charts, and
 - Clean up the `vehicle_make`, `vehicle_model`, and `vehicle_color` columns so that they're consistent and easy to read.
 
 The code below is what we'll use to explore and clean up our data, saving it as a new object named `okc_data_clean`. I know it looks like a lot, but don't worry -- it's not as complicated as it looks, and we'll go through it together step by step.
 
 ```
-# Let's start by adding a `year` variable and filtering the data
+# Let's start by adding a `year` variable and filtering the data ----------
 okc_data_clean <- okc_data |> 
   mutate(
     year = year(date), # Adding our `year` variable from before
@@ -228,19 +229,8 @@ okc_data_clean <- okc_data |>
     type != "pedestrian"  # Removing pedestrian citations
   )
 
-# or...
-
-okc_data |> 
-  mutate(
-    year = year(date),
-  ) |>
-  filter(
-    year >= 2011 & year <= 2017, 
-    type != "pedestrian"
-  ) -> okc_data_clean # This is the same as above
-
-# Next, we'll clean up the `color` column. Ideally we'd use a data dictionary / etc. to do this,
-# but since we don't have one, we'll have to use our best guess.
+# Next, we'll clean up the `color` column. ----------
+# Ideally we'd use a data dictionar to do this, but since we don't have one, we'll have to use our best guess.
 okc_data_clean <- okc_data_clean |> 
   mutate(
     # `case_when()` lets us classify each possible value:
@@ -259,16 +249,17 @@ okc_data_clean <- okc_data_clean |>
       vehicle_color == "YEL" ~ "Yellow",
       vehicle_color %in% c("BEI", "BGE") ~ "Beige", 
       vehicle_color %in% c("ONG", "ORG") ~ "Orange",
-      vehicle_color == "DBL" ~ "Dark Blue", # Guessing a bit here -- should this be separate from "Blue"?
-      vehicle_color == "LBL" ~ "Light Blue", # Same as above,
-      vehicle_color == "LGR" ~ "Light Gray",
-      vehicle_color == "DGR" ~ "Dark Gray",
+      vehicle_color == "DBL" ~ "Blue", # Guessing a bit here -- should this be separate from "Blue"?
+      vehicle_color == "LBL" ~ "Blue", # Same as above,
+      vehicle_color == "LGR" ~ "Gray",
+      vehicle_color == "DGR" ~ "Gray",
       vehicle_color == "TEA" ~ "Teal",
       vehicle_color == "CRM" ~ "Cream",
       vehicle_color == "PNK" ~ "Pink",
       vehicle_color == "PLE" ~ "Unknown / Other", # I don't know what "PLE" means! Purple maybe?
       grepl("\\|", vehicle_color) ~ "Unknown / Other", # A few have multiple listed; gonna classify as "Unknown / Other" for now.
-      TRUE ~ vehicle_color
+      # TRUE ~ vehicle_color
+      TRUE ~ "Unknown / Other"
     )
   )
 
@@ -278,38 +269,23 @@ okc_data_clean |>
   arrange(desc(n)) |>
   print(n = 20)
 
-# Let's clean up the `vehicle_make` and `vehicle_model` columns next.
-# This time we'll just modify our existing dataset, so we can keep our new columns / avoid having to re-filter
+# Let's clean up the `vehicle_make` and `vehicle_model` columns next. ----------
+# This is how you'd use a data dictionary if you did have one. First read in the dictionary...
+make_dictionary <- read_csv("~/Downloads/vehicle_make_data_dictionary.csv")
+
+# ...then join it onto your data.
 okc_data_clean <- okc_data_clean |> 
+  left_join(make_dictionary, by = "vehicle_make")
+
+# That's all it takes!
+okc_data_clean |>
+  count(vehicle_make_clean) |> 
+  arrange(desc(n)) |>
+  print(n = 20)
+
+# Finally, let's clean up the model column. ----------
+okc_data_clean <- okc_data_clean |>
   mutate(
-    vehicle_make_clean = case_when(
-      vehicle_make == "CHEV" ~ "Chevy", # Same basic idea as before. We'll cover the top 25 or so most common ones.
-      vehicle_make == "FORD" ~ "Ford",
-      vehicle_make == "HOND" ~ "Honda",
-      vehicle_make == "DODG" ~ "Dodge",
-      vehicle_make == "NISS" ~ "Nissan",
-      vehicle_make %in% c("TOYO", "TOYT") ~ "Toyota",
-      vehicle_make == "GMC" ~ "GMC",
-      vehicle_make == "HYUN" ~ "Hyundai",
-      vehicle_make == "JEEP" ~ "Jeep",
-      vehicle_make == "PONT" ~ "Pontiac",
-      vehicle_make == "CHRY" ~ "Chrysler",
-      vehicle_make == "KIA" ~ "Kia",
-      vehicle_make == "CADI" ~ "Cadillac",
-      vehicle_make == "MAZD" ~ "Mazda",
-      vehicle_make == "BUIC" ~ "Buick",
-      vehicle_make == "BMW" ~ "BMW",
-      vehicle_make %in% c("LEXU", "LEXS") ~ "Lexus",
-      vehicle_make == "VOLV" ~ "Volvo",
-      vehicle_make %in% c("MERC", "MERB") ~ "Mercedes",
-      vehicle_make == "MITS" ~ "Mitsubishi",
-      vehicle_make == "VOLK" ~ "Volkswagen",
-      vehicle_make == "LINC" ~ "Lincoln",
-      vehicle_make == "INFI" ~ "Infiniti",
-      vehicle_make == "ACUR" ~ "Acura",
-      TRUE ~ vehicle_make
-      # TRUE ~ "Unknown / Other"
-    ),
     # For the vehicle model, I'm going to clean it up into broader groups like "Pickup", "Sedan", etc.
     # If we want to look at specific models later, we can just use the original variable
     vehicle_model_clean = case_when(
@@ -331,24 +307,37 @@ okc_data_clean <- okc_data_clean |>
       vehicle_model == "350" & vehicle_make_clean == "Mercedes" ~ "Sports Car", # Mercedes 350
       vehicle_model == "350" & vehicle_make_clean == "Ford" ~ "Pickup", # F-350
       vehicle_model == "350" & vehicle_make_clean == "Nissan" ~ "Sports Car", # Nissan 350
-      TRUE ~ vehicle_model
+      # TRUE ~ vehicle_model
+      TRUE ~ "Unknown / Other"
     )
   )
     
-# These columns also looks a lot better now!
-okc_data_clean |> 
-  count(vehicle_make_clean) |> 
-  arrange(desc(n)) |>
-  print(n = 20)
-
+# This column also looks a lot better now!
 okc_data_clean |> 
   count(vehicle_model_clean) |> 
   arrange(desc(n)) |>
   print(n = 20)
-
 ```
 
-In addition to filtering the data and adding the `year` variable, all we've really done here is classify the vehicle data into clean groups using the `mutate()` and `case_when()` functions. For example, instead of "TOYA" / "TOYT", it just says "Toyota" now. We've also classified the Ford F-150 as a "Pickup", the Toyta Camry as a "Sedan", etc. We've been able to do this for all of the ~550k citations in our filtered data.
+Now our code processes our three relevant columns into a tidy, readable, and usable format! We're just scratching the surface here -- there are all kinds of data cleaning tasks you'll run into, and R has great tools to handle all of them.
+
+```
+# What would it look like to clean other parts of this data?
+okc_data_clean |>
+  mutate(
+    # We could calculate new variablesfrom values in other columns
+    speed_diff = speed - posted_speed,
+    # We could classify into age groups
+    minor = if_else(subject_age < 18, TRUE, FALSE),
+    age_group = case_when(
+      subject_age < 18 ~ "< 18",
+      subject_age >= 18 & subject_age < 25 ~ "18 to 25",
+      subject_age >= 25 & subject_age < 35 ~ "25 to 35",
+      # etc.
+    )
+    # Could use geography? Other demographics? Charges involved?
+  )
+```
 
 At this point, the relevant columns are cleaned up, and we have a good sense of what data are missing. I think we're finally ready to start answering our research question! Because tables are no fun and I'm sick of looking at them, let's do it by making some graphs instead. We'll use our good friend the `{ggplot2}` package to do so.
 
