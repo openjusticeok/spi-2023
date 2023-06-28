@@ -6,7 +6,7 @@
 2) How and why do you get data into R / RStudio?
 3) How and why do you "clean" data?
 4) How do you analyze / graph data?
-5) What other cools stuff is possible with R?
+5) What other cool stuff is possible with R?
 
 **Note:** We're going to be covering quite a bit of ground, so I want to emphasize that the goal here is not for you to memorize / understand each and every thing I'm doing here. Our goal is for you to learn:
 - Why R is useful,
