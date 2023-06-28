@@ -55,7 +55,7 @@ Sometimes you can't find a nice dataset to download, but you can find an API (Ap
 
 Our OKC traffic stop data has nearly 1,000,000 rows -- that's great! But if we try to open a dataset that large in a program like Google Sheets, Microsoft Excel, or LibreOffice Calc, our computers are probably going to throw a fit. So we're going to turn to [The R statistical programming language](https://www.r-project.org/about.html). 
 
-If Excel is a Toyota Camry, R is a custom-built Formula 1 car -- both can get you where you need to go most of the time, but R lets us do more, do it faster, and do it with much larger datasets. It's popular with academics and researchers in particular, and it's what Open Justice Oklahoma uses for most of our work. And best of all, it's entirely free and open source! We'll start by getting R all set up on our computers, then we'll open up our dataset and get analyzing.
+If Excel is a Toyota Camry, R is a custom-built Formula 1 car -- both can get you where you need to go, but R lets us do more, do it faster, and do it with much larger datasets. It's popular with academics and researchers in particular, and it's what Open Justice Oklahoma uses for most of our work. And best of all, it's entirely free and open source! We'll start by getting R all set up on our computers, then we'll open up our dataset and get analyzing.
 
 ### Installing R and RStudio
 
@@ -76,13 +76,13 @@ Now that we've got our tools installed and set up, it's time to import our data!
 
 ### Opening our data in RStudio
 
-We've downloaded our Stanford Open Policing data, and saved it on our computers. Let's assume it's saved in our "Downloads" folder -- on Mac / Linux, that'll be `~/Downloads/` and on Windows it'll be `C:\Users\YourUserName\Downloads\`. Depending on which version you downloaded, the file will end with `.csv` or `.rds`. Either one will work with R! For convenience, I'm renaming my file to `stanford-citation-data-okc.rds` -- you can also find the data in this GitHub repo, in the `spi-2023/data/okc/` directory.
+We've downloaded our Stanford Open Policing data, and saved it on our computers. Depending on which version you downloaded, the file will end with `.csv` or `.rds`. Either one will work with R! For convenience, I'm renaming my file to `stanford-citation-data-okc.rds` and putting it in the `~/Downloads` folder on my computer -- you can also find the data in this GitHub repo, in the `spi-2023/data/okc/` directory.
 
-Once you have the data and know where it is, we'll open a new script in RStudio (`File` > `New File` > `R Script`). You can think of these as literal scripts -- we're giving line-by-line instructions to R, telling it exactly what we want it to do along the way. At the end, we'll run the whole script together, and it will read in our data, analyze it, and produce our graphs, all with the press of a button. Incredible! It should open as a new pane in RStudio.
+Once you have the data and know where it is, we'll open a new **script** in RStudio (`File` > `New File` > `R Script`). You can think of these as literal scripts -- we're giving line-by-line instructions to R, telling it exactly what we want it to do along the way. At the end, we'll run the whole script together, and it will read in our data, analyze it, and produce our graphs, all with the press of a button. Incredible! It should open as a new pane in RStudio.
 
 ![image](https://github.com/openjusticeok/spi-2023/assets/56839927/538825e4-af36-4146-be5f-bf5ced2590cd)
 
-> My RStudio is customized and rearranged slightly, so it might look a bit different than yours.
+**Important Concept: Packages**
 
 Save your script wherever you'd like, and then we'll add our first lines of R code! The first step, before we actually read in our data, is to install and load some **packages** that will help make our task easier. Packages are one of the best parts of R -- they're little libraries of code, usually to accomplish a specific task, that very smart people wrote to make our lives easier. Today, we'll need the following packages:
 
@@ -90,6 +90,8 @@ Save your script wherever you'd like, and then we'll add our first lines of R co
 - `{readr}` -- this package includes functions for reading in all sorts of data. It can handle `.csv` files as well as `.rds` files, so it's what we'll use to load up our data into R.
 - `{lubridate}` -- this package has several useful functions for working with dates / times, which can be tricky.
 - `{ggplot2}` -- this is the premier graphing package in R. We'll be using it to make some fun graphs (and maybe even a map!) using our data.
+
+**Important Concept: Functions**
 
 You can install each of them using the R function `install.packages()`. All R functions use this `word()` format -- the word at the beginning tells R which function we're using, and the parentheses are where we'll put the "arguments" we're supplying to the function. In this case, the only argument we need to provide is to tell it which package we want to install.
 
@@ -138,7 +140,9 @@ To start digging into this dataset, let's try to answer the following questions:
 
 You can give the data a look by simply clicking on it in the Environment panel, or by running `View(okc_data)` in your R console. 
 
-We can also write some code to give us a more fine-tuned look. Below is some of the R code we'll use to explore our dataset. We'll go through what it does and how it works together:
+**Important Concept: Combining Functions Together With Pipes**
+
+We can also write some code to give us a more fine-tuned look. Combining multiple functions together can create powerful and useful results, and we can make it easier with **pipes**. Below is some of the R code we'll use to explore our dataset. We'll go through what it does and how it works together:
 
 ```
 # ==== What variables are there in the data? ====
