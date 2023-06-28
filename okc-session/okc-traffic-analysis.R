@@ -74,17 +74,17 @@ okc_data |>
 okc_data |> 
   count(vehicle_color) |> 
   arrange(desc(n)) |>
-  print(n = 10)
+  print(n = 15)
 
 okc_data |> 
   count(vehicle_make) |> 
   arrange(desc(n)) |>
-  print(n = 10)
+  print(n = 15)
 
 okc_data |>
   count(vehicle_model) |> 
   arrange(desc(n)) |>
-  print(n = 10)
+  print(n = 15)
 
 # Now we have an idea of what we need to clean up.
 
@@ -200,7 +200,7 @@ okc_data_clean |>
 # What would it look like to clean other parts of this data?
 okc_data_clean |>
   mutate(
-    # We could calculate new variablesfrom values in other columns
+    # We could calculate new variables from values in other columns
     speed_diff = speed - posted_speed,
     # We could classify into age groups
     minor = if_else(subject_age < 18, TRUE, FALSE),
@@ -292,7 +292,7 @@ okc_data_clean |>
   labs(title = "OKC Traffic Citations by Vehicle Model Type",
        subtitle = paste0("All vehicle citations issued ", min(okc_data_clean$year), " through ", max(okc_data_clean$year)),
        caption = "Data from https://openpolicing.stanford.edu/data/",
-       x = "Year of Citation",
+       x = "Month of Citation",
        y = "Total Citations Issued") +
   scale_y_continuous(labels = scales::comma) +
   scale_color_viridis_d("Vehicle Type", option = "turbo") +
@@ -356,11 +356,11 @@ ggplotly(chart_make, tooltip = "y")
 # Maps ----
 library(sf)
 library(ggspatial)
-library(tidycensus)
 library(tigris)
+options(tigris_use_cache = TRUE)
 
 okc_shape <- zctas(state = "Oklahoma", year = 2010)
-uas <- urban_areas()
+uas <- urban_areas(cb = TRUE)
 okc_ua <- uas[grep("Oklahoma City", uas$NAME10), ]
 okc_shape <- okc_shape[okc_ua, ]
 okc_shape <- okc_shape |>
