@@ -499,7 +499,7 @@ I've included code in our script (`R/okc-traffic-analysis.R`) that shows how to 
 
 ![image](https://github.com/openjusticeok/spi-2023/assets/56839927/04862e29-df29-46b1-b850-73186b653b08)
 
-**Using Packages to Find and Import Data:** This is an example of how packages can be used to load up data without even having to leave RStudio. It's our internal `{ojodb}` package, which darwas data from our OJO database. Tons of similar ones exist for Census data, data about Congress, data about the economy, etc.
+**Using Packages to Find and Import Data:** This is an example of how packages can be used to load up data without even having to leave RStudio. It's our internal `{ojodb}` package, which draws data from our OJO database. Tons of similar ones exist for Census data, data about Congress, data about the economy, etc.
 
 ![image](https://github.com/openjusticeok/spi-2023/assets/56839927/ae4eba63-4ec6-4b3c-9f98-ede00ac4e30a)
 
