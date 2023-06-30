@@ -3,12 +3,15 @@
 ## Presentation Outline:
 
 0) Start by feeling out what we're interested in most.
+    - Intro to R guide?
+    - Tour behind the scenes of OJO?
+    - Talking about our work?
 
-1) Where do you get data from?
-2) How and why do you get data into R / RStudio?
-3) How and why do you "clean" data?
-4) How do you analyze / graph data?
-5) What other cool stuff is possible with R?
+2) Where do you get data from?
+3) How and why do you get data into R / RStudio?
+4) How and why do you "clean" data?
+5) How do you analyze / graph data?
+6) What other cool stuff is possible with R?
 
 **Note:** We're going to be covering quite a bit of ground, so I want to emphasize that the goal here is not for you to memorize / understand each and every thing I'm doing here. Our goals here are:
 - Teach you the basics of how to search for public policy data online, and give you an idea of the challenges / limits that go along with it,
@@ -479,7 +482,7 @@ We've only just scraped the surface of this data. What else could we do with it?
 - Can we apply this same code / approach to a national dataset?
 - Can we look closer at geography? Maybe its relation to race, vehicle type, etc.?
 
-If I did my job well, you now have a basic understanding of what R can do for you. I'm also hoping the resources linked in this GitHub repo will enable you to go off and tinker with R on your own -- remember, you can use and learn all of the stuff I've showed off (and much more!) for **free!** You don't have to buy or subscribe to R or RStudio, since they're free and open source, and there's a huge community of helpful and very smart people whose shoulders you can stand on. If you are interested in using data in any way in your public policy work, I can't recommend it enough!
+If I did my job well, you now know what R can do for you. I'm also hoping the resources linked in this GitHub repo will enable you to go off and tinker with R on your own -- remember, you can use and learn all of the stuff I've showed off (and much more!) for **free!** You don't have to buy or subscribe to R or RStudio, since they're free and open source, and there's a huge community of helpful and very smart people whose shoulders you can stand on. If you are interested in using data in any way in your public policy work, I can't recommend it enough!
 
 > Ready to go off and get started learning how to do cool stuff with R ✅
 
