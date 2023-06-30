@@ -2,19 +2,21 @@
 
 ## Presentation Outline:
 
+0) Start by feeling out what we're interested in most.
+
 1) Where do you get data from?
 2) How and why do you get data into R / RStudio?
 3) How and why do you "clean" data?
 4) How do you analyze / graph data?
 5) What other cool stuff is possible with R?
 
-**Note:** We're going to be covering quite a bit of ground, so I want to emphasize that the goal here is not for you to memorize / understand each and every thing I'm doing here. Our goal is for you to learn:
-- Why R is useful,
-- How to install R and RStudio,
-- The basics of loading and exploring data in R, and
-- A general sense of what's possible with R.
+**Note:** We're going to be covering quite a bit of ground, so I want to emphasize that the goal here is not for you to memorize / understand each and every thing I'm doing here. Our goals here are:
+- Teach you the basics of how to search for public policy data online, and give you an idea of the challenges / limits that go along with it,
+- Convince you that R is useful and worth your time / effort,
+- Demistify R, and teach you the basic concepts you'll need to get started with a step-by-step tutorial, and finally,
+- Give you a sense of what's possible with R, and why we use it at OKPI / OJO.
 
-In other words, don't feel like you're missing something or falling behind if some of this is confusing! If you decide R is something you want to dive into deeper, you can use the free books and resources linked in this GitHub repo to get up and running yourself.
+In other words, don't feel like you're missing something or falling behind if some of this is confusing! The general concepts are what's important -- if you decide R is something you want to dive into deeper, you can use the free books and resources linked in this GitHub repo to get up and running yourself.
 
 ## Our Research Question
 
@@ -55,7 +57,9 @@ Sometimes you can't find a nice dataset to download, but you can find an API (Ap
 
 Our OKC traffic stop data has nearly 1,000,000 rows -- that's great! But if we try to open a dataset that large in a program like Google Sheets, Microsoft Excel, or LibreOffice Calc, our computers are probably going to throw a fit. So we're going to turn to [The R statistical programming language](https://www.r-project.org/about.html). 
 
-If Excel is a Toyota Camry, R is a custom-built Formula 1 car -- both can get you where you need to go, but R lets us do more, do it faster, and do it with much larger datasets. It's popular with academics and researchers in particular, and it's what Open Justice Oklahoma uses for most of our work. And best of all, it's entirely free and open source! We'll start by getting R all set up on our computers, then we'll open up our dataset and get analyzing.
+R is a "statistics programming language." It may look intimidating, what with the code and `the_weirdly() formatted$text`, and you may think that you  need to be a statistics math wizard or a matrix computer hacker to use it. Fortunately, you're dead wrong! Thanks to its popularity -- with researchers, academics, data analysts in fields like biomedicine / finance -- there are tons of accessiblity-oriented tools, resources, and guides out there to make it easy to learn as your first foray into coding. It's also what Open Justice Oklahoma uses for most of our work. And best of all, it's entirely **free** and open source!
+
+We'll start by getting R all set up on our computers, then we'll open up our dataset and get analyzing.
 
 ### Installing R and RStudio
 
