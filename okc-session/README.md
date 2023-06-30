@@ -508,5 +508,6 @@ I've included code in our script (`R/okc-traffic-analysis.R`) that shows how to 
 
 **Using Packages to Find and Import Data:** This is an example of how packages can be used to load up data without even having to leave RStudio. It's our internal `{ojodb}` package, which draws data from our OJO database. Tons of similar ones exist for Census data, data about Congress, data about the economy, etc.
 
-![image](https://github.com/openjusticeok/spi-2023/assets/56839927/ae4eba63-4ec6-4b3c-9f98-ede00ac4e30a)
+<img width="886" alt="Screen Shot 2023-06-30 at 12 54 08 AM" src="https://github.com/openjusticeok/spi-2023/assets/56839927/7060a34e-081b-49ec-b15d-99cbab5d8638">
+
 
