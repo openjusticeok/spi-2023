@@ -506,6 +506,8 @@ I've included code in our script (`R/okc-traffic-analysis.R`) that shows how to 
 
 ![image](https://github.com/openjusticeok/spi-2023/assets/56839927/04862e29-df29-46b1-b850-73186b653b08)
 
+Here's another Shiny app I made for presenting data on county disparities: https://openjusticeok.shinyapps.io/kids-count-map/
+
 **Using Packages to Find and Import Data:** This is an example of how packages can be used to load up data without even having to leave RStudio. It's our internal `{ojodb}` package, which draws data from our OJO database. Tons of similar ones exist for Census data, data about Congress, data about the economy, etc.
 
 <img width="886" alt="Screen Shot 2023-06-30 at 12 54 08 AM" src="https://github.com/openjusticeok/spi-2023/assets/56839927/7060a34e-081b-49ec-b15d-99cbab5d8638">
